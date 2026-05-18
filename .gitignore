@@ -53,3 +53,12 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Visual Studio 관련 임시 파일 및 폴더
+.vs/
+Debug/
+Release/
+x64/
+*.user
+*.aps
+*.opendb
