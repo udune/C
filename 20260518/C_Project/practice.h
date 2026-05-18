@@ -48,5 +48,7 @@ void mainSwapNum();
 void swapNum(int* pnum1, int* pnum2);
 void printArray(int* arr, int size);
 void mainPrintArray();
+void printArray2(int arr[], int size);
+void mainPrintArray2();
 
 #endif

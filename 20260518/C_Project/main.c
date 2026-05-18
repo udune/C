@@ -42,7 +42,8 @@ int main(void) {
 	/*pointerArrayMaxFind();*/
 	/*pointerArray();*/
 	/*mainSwapNum();*/
-	mainPrintArray();
+	/*mainPrintArray();*/
+	mainPrintArray2();
 
 	return 0;
 }

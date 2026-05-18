@@ -1041,10 +1041,33 @@ void mainPrintArray() {
 	printArray(numbers, 5);
 }
 
-void printArray(int* arr, int* size) {
+void printArray(int* arr, int size) {
 	printf("arr = %p \n", arr);
 
 	for (int i = 0; i < size; i++) {
 		printf("%d ", *(arr + i));
 	}
+}
+
+void mainPrintArray2() {
+	int numbers[] = { 10, 20, 30, 40, 50 };
+
+	printf("numbers = %p \n", numbers);
+	printArray2(numbers, 5);
+
+	for (int i = 0; i < 5; i++) {
+		printf("numbers[%d] = %d \n", i, numbers[i]);
+	}
+}
+
+void printArray2(int arr[], int size) {
+	printf("arr = %p \n", arr);
+
+	for (int i = 0; i < size; i++) {
+		printf("arr[%d] = %d \n", i, arr[i]);
+		printf("arr+%d : %p \n\n", i, *(arr + i));
+	}
+
+	arr[0] = 11;
+	*(arr + 1) = 22;
 }
