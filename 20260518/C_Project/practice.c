@@ -992,3 +992,19 @@ void pointerArrayMaxFind() {
 
 	printf("배열의 최대값: %d\n", max);
 }
+
+void pointerArray() {
+	int num1 = 10;
+	int num2 = 20;
+	int num3 = 30;
+
+	int* arr[3] = { &num1, &num2, &num3 };
+
+	printf("&num1 = %p arr[0] = %p\n", &num1, arr[0]);
+	printf("&num2 = %p arr[1] = %p\n", &num2, arr[1]);
+	printf("&num3 = %p arr[2] = %p\n", &num3, arr[2]);
+
+	printf("*arr[0] = %d\n", *arr[0]);
+	printf("*arr[1] = %d\n", *arr[1]);
+	printf("*arr[2] = %d\n", *arr[2]);
+}

@@ -39,7 +39,8 @@ int main(void) {
 
 	/*pointerOffset();*/
 	/*pointerArraySum();*/
-	pointerArrayMaxFind();
+	/*pointerArrayMaxFind();*/
+	pointerArray();
 
 	return 0;
 }
