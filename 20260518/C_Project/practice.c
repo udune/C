@@ -971,3 +971,24 @@ void pointerArraySum() {
 
 	printf("배열의 총합: %d\n", sum);
 }
+
+void pointerArrayMaxFind() {
+	int arr[5];
+	int* ptr = arr;
+	int max;
+
+	for (int i = 0; i < 5; i++) {
+		printf("%d번째 값: ", i + 1);
+		scanf("%d", (ptr + i));
+	}
+
+	max = *ptr; // max를 arr[0]의 값으로 초기화
+
+	for (int i = 1; i < 5; i++) {
+		if (*(ptr + i) > max) {
+			max = *(ptr + i); // max보다 큰 값이 있으면 max를 업데이트
+		}
+	}
+
+	printf("배열의 최대값: %d\n", max);
+}

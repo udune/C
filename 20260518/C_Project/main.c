@@ -38,7 +38,8 @@ int main(void) {
 	/*pointerArrayType1();*/
 
 	/*pointerOffset();*/
-	pointerArraySum();
+	/*pointerArraySum();*/
+	pointerArrayMaxFind();
 
 	return 0;
 }

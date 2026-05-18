@@ -41,5 +41,6 @@ void pointerArrayType();
 void pointerArrayType1();
 void pointerOffset();
 void pointerArraySum();
+void pointerArrayMaxFind();
 
 #endif
