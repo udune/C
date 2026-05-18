@@ -41,7 +41,8 @@ int main(void) {
 	/*pointerArraySum();*/
 	/*pointerArrayMaxFind();*/
 	/*pointerArray();*/
-	mainSwapNum();
+	/*mainSwapNum();*/
+	mainPrintArray();
 
 	return 0;
 }

@@ -1033,3 +1033,18 @@ void swapNum(int* pnum1, int* pnum2)
 
 	printf("*pnum1 = %d, *pnum2 = %d \n", *pnum1, *pnum2);
 }
+
+void mainPrintArray() {
+	int numbers[] = { 10, 20, 30, 40, 50 };
+
+	printf("numbers = %p \n", numbers);
+	printArray(numbers, 5);
+}
+
+void printArray(int* arr, int* size) {
+	printf("arr = %p \n", arr);
+
+	for (int i = 0; i < size; i++) {
+		printf("%d ", *(arr + i));
+	}
+}
