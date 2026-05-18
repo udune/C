@@ -40,7 +40,8 @@ int main(void) {
 	/*pointerOffset();*/
 	/*pointerArraySum();*/
 	/*pointerArrayMaxFind();*/
-	pointerArray();
+	/*pointerArray();*/
+	mainSwapNum();
 
 	return 0;
 }

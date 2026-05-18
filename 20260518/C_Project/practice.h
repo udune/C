@@ -44,5 +44,7 @@ void pointerArraySum();
 void pointerArrayMaxFind();
 
 void pointerArray();
+void mainSwapNum();
+void swapNum(int* pnum1, int* pnum2);
 
 #endif

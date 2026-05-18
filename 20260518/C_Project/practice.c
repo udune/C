@@ -1008,3 +1008,28 @@ void pointerArray() {
 	printf("*arr[1] = %d\n", *arr[1]);
 	printf("*arr[2] = %d\n", *arr[2]);
 }
+
+void mainSwapNum() {
+	int num1 = 50;
+	int num2 = 30;
+
+	printf("swapNum before : num1 = %d, num2 = %d \n", num1, num2);
+	printf("&num1 = %p, &num2 = %p \n", &num1, &num2);
+
+	swapNum(&num1, &num2);
+	printf("swapNum after : num1 = %d, num2 = %d \n", num1, num2);
+}
+
+void swapNum(int* pnum1, int* pnum2)
+{
+	int temp;
+	printf("%s &pnum1 = %p, &pnum2 = %p \n", __func__, &pnum1, &pnum2);
+	printf("pnum1 = %p, pnum2 = %p \n", pnum1, pnum2);
+	printf("*pnum1 = %d, *pnum2 = %d \n", *pnum1, *pnum2);
+
+	temp = *pnum2;
+	*pnum1 = *pnum2;
+	*pnum2 = temp;
+
+	printf("*pnum1 = %d, *pnum2 = %d \n", *pnum1, *pnum2);
+}
