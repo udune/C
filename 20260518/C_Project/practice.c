@@ -1027,7 +1027,7 @@ void swapNum(int* pnum1, int* pnum2)
 	printf("pnum1 = %p, pnum2 = %p \n", pnum1, pnum2);
 	printf("*pnum1 = %d, *pnum2 = %d \n", *pnum1, *pnum2);
 
-	temp = *pnum2;
+	temp = *pnum1;
 	*pnum1 = *pnum2;
 	*pnum2 = temp;
 
