@@ -50,5 +50,7 @@ void printArray(int* arr, int size);
 void mainPrintArray();
 void printArray2(int arr[], int size);
 void mainPrintArray2();
+void mainScoreCalc();
+void scoreCalc(int* score, int* sum, double* average);
 
 #endif

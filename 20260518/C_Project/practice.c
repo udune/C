@@ -1071,3 +1071,29 @@ void printArray2(int arr[], int size) {
 	arr[0] = 11;
 	*(arr + 1) = 22;
 }
+
+void mainScoreCalc() {
+	int score[5];
+	int sum = 0;
+	double average = 0;
+
+	printf("5명의 점수를 입력하세요: \n");
+	for (int i = 0; i < 5; i++) {
+		printf("%d번째 학생 점수: ", i + 1);	
+		scanf("%d", &score[i]);
+
+	}
+
+	scoreCalc(score, &sum, &average);
+
+	printf("\n합계 : %d\n", sum);
+	printf("평균 : %.2f\n", average);
+}
+
+void scoreCalc(int* score, int* sum, double* average) {
+	for (int i = 0; i < 5; i++) {
+		*sum += *(score + i);
+	}
+	
+	*average = (double) *sum / 5.0;
+}

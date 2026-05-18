@@ -43,7 +43,9 @@ int main(void) {
 	/*pointerArray();*/
 	/*mainSwapNum();*/
 	/*mainPrintArray();*/
-	mainPrintArray2();
+	/*mainPrintArray2();*/
+
+	mainScoreCalc();
 
 	return 0;
 }
