@@ -1186,6 +1186,10 @@ void SwapChar()
 
 	str = (char**)malloc(n * sizeof(char*));
 
+	// str[i]와 *(str+i)는 같은 주소값을 가리킴
+
+	// &str은 str 변수 자신이 사는 주소값을 가리킴
+	// str은 포인터 배열의 시작 주소값을 가리킴(첫번째 malloc 결과)
 	printf("&str : %p\n", &str);
 	printf("str : %p\n", str);
 	printf("str + 1 : %p\n", str + 1);
