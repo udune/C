@@ -1136,6 +1136,8 @@ void SwapPointer() {
 	printf("ptr1 = %p, ptr2 = %p\n", ptr1, ptr2);
 	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
 
+	// ptr1, ptr2가 가진 복사된 주소값을 복사해서 p1, p2에 넣는다.
+	// 함수 안에서 p1과 p2를 바꿔도 복사본끼리의 교환일 뿐 원본 ptr1, ptr2는 그대로다.
 	SwapPtr(ptr1, ptr2);
 
 	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
@@ -1145,23 +1147,31 @@ void SwapDPointer() {
 	int num1 = 10;
 	int num2 = 20;
 
+	// ptr1과 ptr2는 num1과 num2의 주소를 저장하는 포인터입니다.
 	int* ptr1 = &num1;
 	int* ptr2 = &num2;
 
 	printf("ptr1 = %p, ptr2 = %p\n", ptr1, ptr2);
 	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
 
+	// ptr1, ptr2가 사는 주소를 넘긴다. 
+	// p1과 p2는 포인터를 직접 가리키게 되고 
+	// *p1, *p2로 원본 포인터의 내용을 진짜로 바꿀수 있다.
 	SwapDPtr(&ptr1, &ptr2);
 
 	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
 }
 
+// SwapPtr 함수는 포인터를 사용하여 
+// 포인터의 값을 전달받아 포인터 자체를 교환하는 함수입니다.
 void SwapPtr(int* p1, int* p2) {
 	int* temp = p1;
 	p1 = p2;
 	p2 = temp;
 }
 
+// SwapDPtr 함수는 이중 포인터를 사용하여 
+// 포인터의 주소를 전달받아 포인터 자체를 교환하는 함수입니다.
 void SwapDPtr(int** p1, int** p2) {
 	int* temp = *p1;
 	*p1 = *p2;
