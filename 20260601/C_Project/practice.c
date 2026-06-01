@@ -1099,19 +1099,71 @@ void scoreCalc(int* score, int* sum, double* average) {
 }
 
 void doublePointer() {
+	// 이중 포인터는 포인터를 가리키는 포인터입니다.
 	int num = 10;
+
+	// ptr은 int형 포인터 변수입니다. ptr은 num 변수의 주소를 저장합니다.
 	int* ptr = &num;
+
+	// dptr은 int형 이중 포인터 변수입니다. dptr은 ptr 변수의 주소를 저장합니다.
 	int** dptr = &ptr;
 
-	printf("&num = %p\n", &num);
-	printf("ptr = %p\n", ptr);
-	printf("&ptr = %p\n", &ptr);
-	printf("dptr = %p\n", dptr);
-	printf("&dptr = %p\n", &dptr);
+	printf("&num = %p\n", &num); // num 변수의 주소값을 출력합니다.
+	printf("ptr = %p\n", ptr); // ptr이 가리키는 주소값을 출력합니다.
+	printf("&ptr = %p\n", &ptr); // ptr 변수의 주소값을 출력합니다. &ptr == &dptr이므로, ptr과 dptr이 가리키는 주소값은 같습니다.
+	printf("dptr = %p\n", dptr); // dptr이 가리키는 주소값을 출력합니다. dptr == &ptr이므로, dptr이 가리키는 주소는 ptr의 주소(&ptr)와 같습니다.
+	printf("&dptr = %p\n", &dptr); // dptr 변수의 주소값을 출력합니다. &ptr == &dptr이므로, ptr과 dptr이 가리키는 주소값은 같습니다.
 
+	// num, *ptr, **dptr의 값을 출력합니다.
 	printf("1. num = %d\n, *ptr = %d, **dptr = %d\n", num, *ptr, **dptr);
+
+	// ptr을 통해 num의 값을 변경합니다.
 	*ptr = 20;
 	printf("2. num = %d\n, *ptr = %d, **dptr = %d\n", num, *ptr, **dptr);
+
+	// dptr을 통해 num의 값을 변경합니다.
 	**dptr = 30;
 	printf("3. num = %d\n, *ptr = %d, **dptr = %d\n", num, *ptr, **dptr);
+}
+
+void SwapPointer() {
+	int num1 = 10;
+	int num2 = 20;
+
+	int* ptr1 = &num1;
+	int* ptr2 = &num2;
+
+	printf("ptr1 = %p, ptr2 = %p\n", ptr1, ptr2);
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+
+	SwapPtr(ptr1, ptr2);
+
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+}
+
+void SwapDPointer() {
+	int num1 = 10;
+	int num2 = 20;
+
+	int* ptr1 = &num1;
+	int* ptr2 = &num2;
+
+	printf("ptr1 = %p, ptr2 = %p\n", ptr1, ptr2);
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+
+	SwapDPtr(&ptr1, &ptr2);
+
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+}
+
+void SwapPtr(int* p1, int* p2) {
+	int* temp = p1;
+	p1 = p2;
+	p2 = temp;
+}
+
+void SwapDPtr(int** p1, int** p2) {
+	int* temp = *p1;
+	*p1 = *p2;
+	*p2 = temp;
 }

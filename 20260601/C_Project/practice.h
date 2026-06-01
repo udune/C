@@ -53,5 +53,9 @@ void mainPrintArray2();
 void mainScoreCalc();
 void scoreCalc(int* score, int* sum, double* average);
 void doublePointer();
+void SwapPointer();
+void SwapPtr(int* p1, int* p2);
+void SwapDPointer();
+void SwapDPtr(int** pp1, int** pp2);
 
 #endif
