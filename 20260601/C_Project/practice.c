@@ -1224,3 +1224,29 @@ static void freeSwapCharMemory(char** str, int n) {
 
 	free(str);
 }
+
+void DoublePointer() {
+	char base_str[100];
+	char* str_ptr = base_str;
+
+	printf("문자열 입력 : ");
+	gets(str_ptr);
+	printf("변경 전 str_ptr이 가리키는 문자열 : ");
+	puts(str_ptr);
+
+	updateString(&str_ptr);
+
+	printf("변경 후 str_ptr이 가리키는 문자열 : ");
+	puts(str_ptr);
+}
+
+void updateString(char** dest_ptr)
+{
+	char input_buffer[100];
+	char* temp_ptr = input_buffer;
+
+	printf("변경할 문자열 입력 : ");
+	gets(temp_ptr);
+
+	strcpy(*dest_ptr, temp_ptr);
+}

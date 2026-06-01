@@ -49,7 +49,8 @@ int main(void) {
 	/*doublePointer();*/
 	/*SwapPointer();*/
 	/*SwapDPointer();*/
-	SwapChar();
+	/*SwapChar();*/
+	DoublePointer();
 
 	return 0;
 }
