@@ -57,5 +57,7 @@ void SwapPointer();
 void SwapPtr(int* p1, int* p2);
 void SwapDPointer();
 void SwapDPtr(int** pp1, int** pp2);
+void SwapChar();
+void freeSwapCharMemory();
 
 #endif

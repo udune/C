@@ -48,7 +48,8 @@ int main(void) {
 	/*mainScoreCalc();*/
 	/*doublePointer();*/
 	/*SwapPointer();*/
-	SwapDPointer();
+	/*SwapDPointer();*/
+	SwapChar();
 
 	return 0;
 }

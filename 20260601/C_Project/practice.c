@@ -1177,3 +1177,50 @@ void SwapDPtr(int** p1, int** p2) {
 	*p1 = *p2;
 	*p2 = temp;
 }
+
+void SwapChar()
+{
+	int n = 3;
+
+	char** str;
+
+	str = (char**)malloc(n * sizeof(char*));
+
+	printf("&str : %p\n", &str);
+	printf("str : %p\n", str);
+	printf("str + 1 : %p\n", str + 1);
+	printf("str + 2 : %p\n", str + 2);
+
+	for (int i = 0; i < n; i++) {
+		str[i] = (char*)malloc(100 * sizeof(char));
+		printf("str[%d] : %p\n", i, str[i]);
+	}
+
+	printf("*str : %p\n", *str);
+	printf("*(str + 1) : %p\n", *(str + 1));
+	printf("*(str + 2) : %p\n", *(str + 2));
+
+	strcpy(str[0], "apple");
+	strcpy(str[1], "banana");
+	strcpy(str[2], "cherry");
+
+	for (int i = 0; i < n; i++) {
+		printf("%s\n", str[i]);
+	}
+
+	freeSwapCharMemory(str, n);
+	str = NULL;
+}
+
+static void freeSwapCharMemory(char** str, int n) {
+	if (str == NULL) {
+		return;
+	}
+
+	for (int i = 0; i < n; i++) {
+		free(str[i]);
+		str[i] = NULL;
+	}
+
+	free(str);
+}
