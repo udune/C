@@ -50,7 +50,9 @@ int main(void) {
 	/*SwapPointer();*/
 	/*SwapDPointer();*/
 	/*SwapChar();*/
-	DoublePointer();
+	/*DoublePointer();*/
+
+	Arr2DNameAndArrPtr();
 
 	return 0;
 }

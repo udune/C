@@ -42,6 +42,7 @@ void pointerArrayType1();
 void pointerOffset();
 void pointerArraySum();
 void pointerArrayMaxFind();
+void Arr2DNameAndArrPtr();
 
 void pointerArray();
 void mainSwapNum();

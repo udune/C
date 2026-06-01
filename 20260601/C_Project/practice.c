@@ -1190,6 +1190,11 @@ void SwapChar()
 
 	// &str은 str 변수 자신이 사는 주소값을 가리킴
 	// str은 포인터 배열의 시작 주소값을 가리킴(첫번째 malloc 결과)
+	// str + 1, str + 2는 배열에서 한 칸씩 건너뛴 주소. str은 char*를 가리키므로 한 칸이 sizeof(char*)이다.
+	// str[i]는 각 문자열 버퍼의 주소
+	// *str은 str[0]이 가리키는 문자열 버퍼의 주소
+	// *(str + 1)은 str[1]이 가리키는 문자열 버퍼의 주소
+	// *(str + 2)는 str[2]이 가리키는 문자열 버퍼의 주소
 	printf("&str : %p\n", &str);
 	printf("str : %p\n", str);
 	printf("str + 1 : %p\n", str + 1);
@@ -1223,18 +1228,20 @@ static void freeSwapCharMemory(char** str, int n) {
 
 	for (int i = 0; i < n; i++) {
 		free(str[i]);
-		str[i] = NULL;
 	}
-
-	free(str);
 }
 
-void DoublePointer() {
+void DoublePointer()
+{
 	char base_str[100];
 	char* str_ptr = base_str;
 
 	printf("문자열 입력 : ");
-	gets(str_ptr);
+	if (fgets(str_ptr, sizeof(base_str), stdin) == NULL) {
+		return;
+	}
+	str_ptr[strcspn(str_ptr, "\n")] = '\0';
+
 	printf("변경 전 str_ptr이 가리키는 문자열 : ");
 	puts(str_ptr);
 
@@ -1247,10 +1254,46 @@ void DoublePointer() {
 void updateString(char** dest_ptr)
 {
 	char input_buffer[100];
-	char* temp_ptr = input_buffer;
 
 	printf("변경할 문자열 입력 : ");
-	gets(temp_ptr);
+	if (fgets(input_buffer, sizeof(input_buffer), stdin) == NULL) {
+		return;
+	}
+	input_buffer[strcspn(input_buffer, "\n")] = '\0';
 
-	strcpy(*dest_ptr, temp_ptr);
+	strcpy(*dest_ptr, input_buffer);
+}
+
+void Arr2DNameAndArrPtr(void)
+{
+	int arr1[2][2] = {
+		{1, 2}, {3, 4}
+	};
+	int arr2[3][2] = {
+		{1, 2}, {3, 4}, {5, 6}
+	};
+	int arr3[4][2] = {
+		{1, 2}, {3, 4}, {5, 6}, {7, 8}
+	};
+
+	int (*ptr)[2];
+	int i;
+
+	ptr = arr1;
+	printf("** case ptr = arr1 **\n");
+	for (i = 0; i < 2; i++) {
+		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
+
+	ptr = arr2;
+	printf("** case ptr = arr2 **\n");
+	for (i = 0; i < 3; i++) {
+		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
+
+	ptr = arr3;
+	printf("** case ptr = arr3 **\n");
+	for (i = 0; i < 4; i++) {
+		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
 }
