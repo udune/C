@@ -68,6 +68,7 @@ void updateString(char** dest_ptr);
 void printArray1(int arr[][4], int rows);
 void SumArray(int (*arr)[4], int rows, int* sum);
 int SumArray1(int (*arr)[4], int rows);
-void Arr2DArrayFunctionPractice(void);
+void Arr2DArrayFunctionPractice();
+void Arr2DAccessType();
 
 #endif

@@ -55,8 +55,8 @@ int main(void) {
 	/*Arr2DNameAndArrPtr();*/
 	/*ArrPtrAndPtrArr();*/
 
-
-	Arr2DArrayFunctionPractice();
+	/*Arr2DArrayFunctionPractice();*/
+	Arr2DAccessType();
 
 	return 0;
 }
