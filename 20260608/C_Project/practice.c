@@ -1275,3 +1275,54 @@ void MethodPointer()
 	}
 }
 
+// 센서 필터 함수 포인터 타입 정의
+// int를 받아 int를 반환하는 필터 함수 시그니처
+typedef int (*FilterFunc)(int);
+
+// 원본 데이터를 그대로 통과시키는 필터(일반 모드)
+static int bypass_filter(int raw_data)
+{
+	return raw_data;
+}
+
+// 임계값 제한 필터(안전 모드)
+// 값이 100을 넘으면 100으로 제한
+static int limit_filter(int raw_data)
+{
+	if (raw_data > 100) {
+		return 100;
+	}
+
+	return raw_data;
+}
+
+// 센서 처리 공통 함수
+// callback으로 전달받은 필터 알고리즘을 적용한다.
+static void process_sensor(int raw_value, FilterFunc callback)
+{
+	// 안전을 위해 NULL 콜백 방어
+	if (callback == NULL) {
+		printf("오류: 필터 콜백이 NULL입니다.\n");
+		return;
+	}
+
+	printf("원본 데이터: %d\n", raw_value);
+
+	// 함수 포인터로 필터 함수 호출
+	int filtered_value = callback(raw_value);
+
+	printf("가공된 데이터: %d\n\n", filtered_value);
+}
+
+// 함수 포인터 기반 메카트로닉스/센서 응용 예제
+void SensorFilterPointerPractice(void)
+{
+	int sensor_signal = 135;
+
+	printf("1: 일반 모드\n");
+	process_sensor(sensor_signal, bypass_filter);
+
+	printf("2: 안전 모드\n");
+	process_sensor(sensor_signal, limit_filter);
+}
+

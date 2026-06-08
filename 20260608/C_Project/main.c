@@ -58,7 +58,8 @@ int main(void) {
 	/*Arr2DArrayFunctionPractice();*/
 	/*Arr2DAccessType();*/
 	/*scorePointerPractice();*/
-	MethodPointer();
+	/*MethodPointer();*/
+	SensorFilterPointerPractice();
 
 	return 0;
 }

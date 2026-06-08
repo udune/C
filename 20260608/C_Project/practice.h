@@ -74,5 +74,6 @@ void analyzeScores(int (*arrP)[4], int rows);
 void scorePointerPractice(void);
 
 void MethodPointer();
+void SensorFilterPointerPractice(void);
 
 #endif
