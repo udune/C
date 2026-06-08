@@ -73,4 +73,6 @@ void Arr2DAccessType();
 void analyzeScores(int (*arrP)[4], int rows);
 void scorePointerPractice(void);
 
+void MethodPointer();
+
 #endif

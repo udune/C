@@ -57,7 +57,8 @@ int main(void) {
 
 	/*Arr2DArrayFunctionPractice();*/
 	/*Arr2DAccessType();*/
-	scorePointerPractice();
+	/*scorePointerPractice();*/
+	MethodPointer();
 
 	return 0;
 }

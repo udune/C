@@ -619,7 +619,7 @@ void StringSwap() {
 	}
 
 	// korea로 입력하면 rev 배열에는 'a', 'e', 'r', 'o', 'k'이 저장됨
-	// rev[5]는 rev 배열의 마지막 요소이므로, rev[5]에 null 문자('\0')를 추가하여 문자열이 제대로 종료되도록 함
+	// rev[5]는 rev 배열의 마지막 요소이므로, rev[5]에 null 문자('\0')을 추가하여 문자열이 제대로 종료되도록 함
 	rev[len] = '\0';
 
 	printf("입력한 문자열 : %s\n", str);
@@ -1204,3 +1204,74 @@ void scorePointerPractice(void)
 	// 분석 함수 호출
 	analyzeScores(score, 2);
 }
+
+// 덧셈 함수
+static int add(int a, int b)
+{
+	return a + b;
+}
+
+// 뺄셈 함수
+static int sub(int a, int b)
+{
+	return a - b;
+}
+
+// 곱셈 함수
+static int mul(int a, int b)
+{
+	return a * b;
+}
+
+// 나눗셈 함수 (0으로 나누기 방지)
+static int div1(int a, int b)
+{
+	if (b == 0) {
+		printf("오류: 0으로 나눌 수 없습니다.\n");
+		return 0;
+	}
+
+	return a / b;
+}
+
+// 함수 포인터(점프 테이블) 실습
+void MethodPointer()
+{
+	int op_index;
+	int num1;
+	int num2;
+	int result;
+
+	// 함수 포인터 배열(점프 테이블)
+	// 0:add, 1:sub, 2:mul, 3:div1
+	int (*jump_table[4])(int, int) = { add, sub, mul, div1 };
+
+	printf("=== 함수 포인터 계산기 ===\n");
+
+	while (1) {
+		printf("0:덧셈, 1:뺄셈, 2:곱셈, 3:나눗셈, 4:종료 : ");
+		scanf("%d", &op_index);
+
+		// 범위 검증
+		if (op_index < 0 || op_index > 4) {
+			printf("올바른 번호가 아닙니다.\n");
+			continue;
+		}
+
+		// 종료 선택
+		if (op_index == 4) {
+			printf("계산기를 종료합니다.\n");
+			break;
+		}
+
+		printf("두 정수를 입력하세요 (예: 10 5) : ");
+		scanf("%d %d", &num1, &num2);
+
+		// 함수 포인터 배열을 통한 호출
+		// switch문 없이 인덱스로 바로 해당 함수 실행
+		result = jump_table[op_index](num1, num2);
+
+		printf("연산 결과: %d\n\n", result);
+	}
+}
+
