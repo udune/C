@@ -70,5 +70,7 @@ void SumArray(int (*arr)[4], int rows, int* sum);
 int SumArray1(int (*arr)[4], int rows);
 void Arr2DArrayFunctionPractice();
 void Arr2DAccessType();
+void analyzeScores(int (*arrP)[4], int rows);
+void scorePointerPractice(void);
 
 #endif

@@ -56,7 +56,8 @@ int main(void) {
 	/*ArrPtrAndPtrArr();*/
 
 	/*Arr2DArrayFunctionPractice();*/
-	Arr2DAccessType();
+	/*Arr2DAccessType();*/
+	scorePointerPractice();
 
 	return 0;
 }

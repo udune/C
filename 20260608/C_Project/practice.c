@@ -1134,3 +1134,73 @@ void scoreCalc(int* score, int* sum, double* average)
 
 	*average = (double)*sum / 5.0;
 }
+
+// 2차원 배열(팀 x 인원) 점수를 포인터 표현으로 분석하는 함수
+// arrP[i][j] == *(*(arrP + i) + j)
+void analyzeScores(int (*arrP)[4], int rows)
+{
+	double averages[2] = { 0.0, 0.0 };
+	int maxScores[2] = { 0, 0 };
+
+	// 각 팀(행)별 합계/평균/최고점 계산
+	for (int i = 0; i < rows; i++) {
+		int sum = 0;
+
+		// 각 행의 첫 번째 원소로 최고점 초기화
+		maxScores[i] = *(*(arrP + i) + 0);
+
+		for (int j = 0; j < 4; j++) {
+			// arrP[i][j]를 순수 포인터 수식으로 접근
+			int currentScore = *(*(arrP + i) + j);
+			sum += currentScore;
+
+			// 행별 최고 점수 갱신
+			if (currentScore > maxScores[i]) {
+				maxScores[i] = currentScore;
+			}
+		}
+
+		// 인원 수 4명 기준 평균 계산
+		averages[i] = (double)sum / 4.0;
+	}
+
+	printf("A팀 평균 점수: %.2f점\n", averages[0]);
+	printf("B팀 평균 점수: %.2f점\n", averages[1]);
+
+	// 평균이 더 높은 팀과 해당 팀의 최고점 출력
+	if (averages[0] > averages[1]) {
+		printf("평균이 더 높은 팀: A팀 , 최고 점수: %d점\n", maxScores[0]);
+	}
+	else if (averages[1] > averages[0]) {
+		printf("평균이 더 높은 팀: B팀 , 최고 점수: %d점\n", maxScores[1]);
+	}
+	else {
+		printf("두 팀의 평균이 같습니다.\n");
+		// 평균이 같으면 전체 최고점 출력
+		int absoluteMax = (maxScores[0] > maxScores[1]) ? maxScores[0] : maxScores[1];
+		printf("전체 최고 점수: %d점\n", absoluteMax);
+	}
+}
+
+// 입력 + 분석 실행 함수
+// score[i][j] == *(*(arr1 + i) + j)
+void scorePointerPractice(void)
+{
+	int score[2][4];
+	int (*arr1)[4] = score;
+
+	// A팀 점수 입력 (포인터 표현)
+	printf("A팀 4명의 점수를 입력하세요 : ");
+	for (int j = 0; j < 4; j++) {
+		scanf("%d", *(arr1 + 0) + j);
+	}
+
+	// B팀 점수 입력 (포인터 표현)
+	printf("B팀 4명의 점수를 입력하세요 : ");
+	for (int j = 0; j < 4; j++) {
+		scanf("%d", *(arr1 + 1) + j);
+	}
+
+	// 분석 함수 호출
+	analyzeScores(score, 2);
+}
