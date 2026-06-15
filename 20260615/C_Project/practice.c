@@ -1408,3 +1408,63 @@ void BookInfo(void)
 	}
 }
 
+void AnalyzeMart(void)
+{
+	// 1. 매크로 상수를 사용하여 크기가 3인 구조체 배열 2개 선언
+	struct Product martA[MAX_PRODUCTS];
+	struct Product martB[MAX_PRODUCTS];
+
+	// 변수 선언 (총합 및 최고가 저장용)
+	int sumA = 0;
+	int sumB = 0;
+	int maxPriceA = 0;
+	int maxPriceB = 0;
+
+	printf("--- A마트 상품 %d개 입력 (상품명 가격) ---\n", MAX_PRODUCTS);
+	for (int i = 0; i < MAX_PRODUCTS; i++) {
+		printf("A마트 상품 %d: ", i + 1);
+		scanf("%s %d", martA[i].name, &martA[i].price);
+
+		// 입력과 동시에 총합 및 최고가 누적 구하기
+		sumA += martA[i].price;
+		if (martA[i].price > maxPriceA) {
+			maxPriceA = martA[i].price;
+		}
+	}
+
+	printf("\n--- B마트 상품 %d개 입력 (상품명 가격) ---\n", MAX_PRODUCTS);
+	for (int i = 0; i < MAX_PRODUCTS; i++) {
+		printf("B마트 상품 %d: ", i + 1);
+		scanf("%s %d", martB[i].name, &martB[i].price);
+
+		// 입력과 동시에 총합 및 최고가 누적 구하기
+		sumB += martB[i].price;
+		if (martB[i].price > maxPriceB) {
+			maxPriceB = martB[i].price;
+		}
+	}
+
+	double avgA = (double)sumA / MAX_PRODUCTS;
+	double avgB = (double)sumB / MAX_PRODUCTS;
+
+	printf("\n=== 마트별 가격 분석 결과 ===\n");
+	printf("A마트 상품 평균가: %.1f원\n", avgA);
+	printf("B마트 상품 평균가: %.1f원\n", avgB);
+	printf("--------------------------------------------\n");
+
+	// 평균 가격이 더 낮은(우세한) 마트 판별 및 해당 마트의 최고가 출력
+	if (avgA < avgB) {
+		printf("평균가가 더 저렴한 우세 마트: A마트\n");
+		printf("A마트의 최고가 상품 가격: %d원\n", maxPriceA);
+	}
+	else if (avgB < avgA) {
+		printf("평균가가 더 저렴한 우세 마트: B마트\n");
+		printf("B마트의 최고가 상품 가격: %d원\n", maxPriceB);
+	}
+	else {
+		printf("두 마트의 평균가가 같습니다.\n");
+	}
+	printf("============================================\n");
+}
+
+

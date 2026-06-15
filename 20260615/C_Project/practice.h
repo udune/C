@@ -81,6 +81,16 @@ struct Book {
 
 void BookInfo(void);
 
+#define MAX_PRODUCTS 3
+
+struct Product {
+	char name[20];
+	int price;
+};
+
+void AnalyzeMart(void);
+
 #endif
+
 
 

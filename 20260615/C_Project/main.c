@@ -55,9 +55,11 @@ int main(void) {
 	/*Arr2DNameAndArrPtr();*/
 	/*ArrPtrAndPtrArr();*/
 	/*StudentInfo();*/
-	BookInfo();
+	/*BookInfo();*/
+	AnalyzeMart();
 
 	return 0;
 }
+
 
 
