@@ -101,6 +101,13 @@ void showStudentInfo(Person person);
 Person readStudentInfo(void);
 void studentStructPractice(void);
 
+typedef struct {
+	int xpos;
+	int ypos;
+} Position;
+
+void TestStructPointer(void);
+
 #endif
 
 

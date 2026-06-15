@@ -56,11 +56,8 @@ int main(void) {
 	/*ArrPtrAndPtrArr();*/
 	/*StudentInfo();*/
 	/*AnalyzeMart();*/
-	studentStructPractice();
+	/*studentStructPractice();*/
+	TestStructPointer();
 
 	return 0;
 }
-
-
-
-

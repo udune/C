@@ -1494,3 +1494,34 @@ void studentStructPractice(void)
 	Person student = readStudentInfo();
 	showStudentInfo(student);
 }
+
+void TestStructPointer(void)
+{
+	Position pos1 = { 1, 2 };
+	Position pos2 = { 100, 200 };
+
+	//구조체 포인터 변수 선언 및 주소 저장
+	Position* ptr = &pos1;
+
+	// 구조체 포인터 ptr 출력
+	printf("--- 포인터 ptr 값 읽기 ---\n");
+	printf("ptr->xpos : %d\n", ptr->xpos); // pos1.xpos와 같음
+	printf("ptr->ypos : %d\n", ptr->ypos); // pos1.ypos와 같음
+
+	// 5. 구조체 포인터를 이용해 원래 변수의 값 변경하기
+	ptr->xpos = 10;
+	ptr->ypos = 20;
+
+	printf("\n--- 값 변경 후 pos1 확인 ---\n");
+	printf("pos.xpos : %d\n", pos1.xpos);
+	printf("pos.ypos : %d\n", pos1.ypos);
+
+	ptr = &pos2;
+	(*ptr).xpos += 1;
+	(*ptr).ypos += 2;
+
+	printf("\n--- 포인터 ptr 값 읽기 ---\n");
+	printf("(*ptr).xpos : %d\n", (*ptr).xpos); // pos2.xpos와 같음
+	printf("(*ptr).ypos : %d\n", (*ptr).ypos); // pos2.ypos와 같음
+}
+
