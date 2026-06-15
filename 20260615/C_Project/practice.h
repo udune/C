@@ -116,6 +116,14 @@ typedef struct {
 
 void StructMemberPointer(void);
 
+typedef struct User
+{
+	char name[20];
+	struct User* next;
+} User;
+
+void StructPointerMemberExample(void);
+
 #endif
 
 

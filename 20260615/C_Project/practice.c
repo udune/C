@@ -1536,3 +1536,14 @@ void StructMemberPointer(void)
 	printf("s2.name : %s\n", s2.name);
 }
 
+void StructPointerMemberExample(void)
+{
+	User s1 = { "Kim", NULL };
+	User s2 = { "Lee", NULL };
+
+	s1.next = &s2; // s1이 s2를 가리킴
+
+	printf("현재 User : %s\n", s1.name);
+	printf("다음 User : %s\n", s1.next->name);
+}
+

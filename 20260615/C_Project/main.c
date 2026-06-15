@@ -62,7 +62,8 @@ int main(void) {
 	/*AnalyzeMart();*/
 	/*studentStructPractice();*/
 	/*TestStructPointer();*/
-	StructMemberPointer();
+	/*StructMemberPointer();*/
+	StructPointerMemberExample();
 
 	return 0;
 }
