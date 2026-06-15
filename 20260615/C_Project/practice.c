@@ -1523,3 +1523,16 @@ void TestStructPointer(void)
 	print_position(pcur_pos);
 }
 
+void StructMemberPointer(void)
+{
+	char name[10] = "Kim";
+
+	Student s1, s2;
+
+	s1.name = name;
+	s2.name = name; // 같은 데이터를 공유
+
+	printf("s1.name : %s\n", s1.name);
+	printf("s2.name : %s\n", s2.name);
+}
+

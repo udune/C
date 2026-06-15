@@ -110,6 +110,12 @@ void print_position(const Position* ptr);
 void move_position(Position* ptr, int x_delta, int y_delta);
 void TestStructPointer(void);
 
+typedef struct {
+	char* name;
+} Student;
+
+void StructMemberPointer(void);
+
 #endif
 
 
