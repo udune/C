@@ -1,8 +1,12 @@
+#include <windows.h>
 #include "input.h"
 #include "output.h"
 #include "practice.h"
 
 int main(void) {
+	// 콘솔 입력/출력 인코딩을 UTF-8(65001)로 설정 (한글 깨짐 해결)
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
 	//boolPractice();
 	//typeConversionPractice();
 	//calculation();

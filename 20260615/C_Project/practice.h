@@ -1,4 +1,4 @@
-﻿#ifndef PRACTICE_H
+#ifndef PRACTICE_H
 #define PRACTICE_H
 
 #include "common.h"
@@ -106,6 +106,8 @@ typedef struct {
 	int ypos;
 } Position;
 
+void print_position(const Position* ptr);
+void move_position(Position* ptr, int x_delta, int y_delta);
 void TestStructPointer(void);
 
 #endif

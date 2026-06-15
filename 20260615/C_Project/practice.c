@@ -1,4 +1,4 @@
-﻿#include "practice.h"
+#include "practice.h"
 
 void boolPractice() {
 	bool flag = true;
@@ -1495,33 +1495,31 @@ void studentStructPractice(void)
 	showStudentInfo(student);
 }
 
+void print_position(const Position* ptr) {
+	printf("현재 위치 -> x: %d, y: %d\n", ptr->xpos, ptr->ypos);
+}
+
+void move_position(Position* ptr, int x_delta, int y_delta) {
+	ptr->xpos += x_delta;
+	ptr->ypos += y_delta;
+}
+
 void TestStructPointer(void)
 {
-	Position pos1 = { 1, 2 };
-	Position pos2 = { 100, 200 };
+	Position current_pos = { 10, 20 };
+	Position *pcur_pos = &current_pos;
+	int x_pos, y_pos;
+	printf("--- 초기 상태 ---\n");
+	print_position(&current_pos);
 
-	//구조체 포인터 변수 선언 및 주소 저장
-	Position* ptr = &pos1;
+	printf("\n--증감(x y) 위치입력: ");
+	if (scanf("%d %d", &x_pos, &y_pos) != 2) {
+		return;
+	}
 
-	// 구조체 포인터 ptr 출력
-	printf("--- 포인터 ptr 값 읽기 ---\n");
-	printf("ptr->xpos : %d\n", ptr->xpos); // pos1.xpos와 같음
-	printf("ptr->ypos : %d\n", ptr->ypos); // pos1.ypos와 같음
+	move_position(pcur_pos, x_pos, y_pos);
 
-	// 5. 구조체 포인터를 이용해 원래 변수의 값 변경하기
-	ptr->xpos = 10;
-	ptr->ypos = 20;
-
-	printf("\n--- 값 변경 후 pos1 확인 ---\n");
-	printf("pos.xpos : %d\n", pos1.xpos);
-	printf("pos.ypos : %d\n", pos1.ypos);
-
-	ptr = &pos2;
-	(*ptr).xpos += 1;
-	(*ptr).ypos += 2;
-
-	printf("\n--- 포인터 ptr 값 읽기 ---\n");
-	printf("(*ptr).xpos : %d\n", (*ptr).xpos); // pos2.xpos와 같음
-	printf("(*ptr).ypos : %d\n", (*ptr).ypos); // pos2.ypos와 같음
+	printf("\n--- 이동 후 상태 ---\n");
+	print_position(pcur_pos);
 }
 
