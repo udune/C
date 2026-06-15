@@ -73,5 +73,14 @@ struct Student {
 
 void StudentInfo(void);
 
+struct Book {
+	char title[40];
+	char author[20];
+	int price;
+};
+
+void BookInfo(void);
+
 #endif
+
 

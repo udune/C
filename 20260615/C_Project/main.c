@@ -54,8 +54,10 @@ int main(void) {
 
 	/*Arr2DNameAndArrPtr();*/
 	/*ArrPtrAndPtrArr();*/
-	StudentInfo();
+	/*StudentInfo();*/
+	BookInfo();
 
 	return 0;
 }
+
 

@@ -1364,7 +1364,8 @@ void ArrPtrAndPtrArr() {
 
 void StudentInfo(void)
 {
-	struct Student person1, person2;
+	struct Student person1;
+	struct Student person2;
 
 	strcpy(person1.name, "김현성");
 	person1.studen_id = 20260001;
@@ -1385,3 +1386,25 @@ void StudentInfo(void)
 	printf("학번 : %d \n", person2.studen_id);
 	printf("전화번호 : %s \n", person2.phone_number);
 }
+
+void BookInfo(void)
+{
+	struct Book library[3] = {
+		{"C언어 기초", "홍길동", 25000},
+		{"파이썬 기초", "이영희", 22000},
+		{"자바 알고리즘", "김철수", 30000}
+	};
+
+	library[1].price = 24000;
+	strcpy(library[1].author, "이영수");
+
+	printf("============== 도서 목록 ==============\n");
+	for (int i = 0; i < 3; i++)
+	{
+		printf("책 제목 : %s\n", library[i].title);
+		printf("저  자 : %s\n", library[i].author);
+		printf("가  격 : %d원\n", library[i].price);
+		printf("--------------------------------------\n");
+	}
+}
+
