@@ -90,6 +90,17 @@ struct Product {
 
 void AnalyzeMart(void);
 
+typedef struct person
+{
+	char name[20];
+	char phone[20];
+	int age;
+} Person;
+
+void showStudentInfo(Person person);
+Person readStudentInfo(void);
+void studentStructPractice(void);
+
 #endif
 
 

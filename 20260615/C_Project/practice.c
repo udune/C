@@ -1462,9 +1462,35 @@ void AnalyzeMart(void)
 		printf("B마트의 최고가 상품 가격: %d원\n", maxPriceB);
 	}
 	else {
-		printf("두 마트의 평균가가 같습니다.\n");
+		printf("★ 두 마트의 평균가가 같습니다.\n");
 	}
 	printf("============================================\n");
 }
 
+void showStudentInfo(Person person)
+{
+	printf("등록한 학생 정보\n");
+	printf("name : %s\n", person.name);
+	printf("phone : %s\n", person.phone);
+	printf("age : %d\n", person.age);
+}
 
+Person readStudentInfo(void)
+{
+	Person student;
+	printf("학생 정보를 입력하세요.\n");
+	printf("name : ");
+	scanf("%s", student.name);
+	printf("phone : ");
+	scanf("%s", student.phone);
+	printf("age : ");
+	scanf("%d", &student.age);
+
+	return student;
+}
+
+void studentStructPractice(void)
+{
+	Person student = readStudentInfo();
+	showStudentInfo(student);
+}
