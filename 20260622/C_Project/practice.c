@@ -1605,4 +1605,16 @@ void testBankSystem(void) {
 	}
 }
 
+void testUnion(void) {
+	ControlRegister ctrl;
+
+	ctrl.reg = 0;           // 전체 초기화
+	ctrl.bits.mode = 3;     // 모드 설정
+	ctrl.bits.enable = 1;   // 활성화
+
+	printf("레지스터 값: 0x%X\n", ctrl.reg);
+	printf("mode = %d, enable = %d\n", ctrl.bits.mode, ctrl.bits.enable);
+}
+
+
 

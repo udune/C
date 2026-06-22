@@ -139,6 +139,19 @@ typedef struct {
 void printCustomerInfo(Customer* c_ptr);
 void testBankSystem(void);
 
+#include <stdint.h>
+
+typedef union {
+	uint8_t reg;
+	struct {
+		uint8_t mode : 2;   // 2bit
+		uint8_t enable : 1; // 1bit
+		uint8_t status : 5; // 5bit
+	} bits;
+} ControlRegister;
+
+void testUnion(void);
+
 #endif
 
 
