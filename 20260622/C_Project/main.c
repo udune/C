@@ -66,7 +66,8 @@ int main(void) {
 	//StructPointerMemberExample();
 	//testBankSystem();
 	//testUnion();
-	testEnum();
+	//testEnum();
+	testTodoSystem();
 
 	return 0;
 }

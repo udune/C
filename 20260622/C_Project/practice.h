@@ -162,8 +162,30 @@ typedef enum {
 	SUN
 } Day;
 
-void printTodo(Day day);
+void printTodoDay(Day day);
 void testEnum(void);
+
+// 공용체와 열거형 조합 실습
+typedef enum {
+	TODO_PENDING,
+	TODO_IN_PROGRESS,
+	TODO_DONE
+} TodoStatus;
+
+typedef union {
+	char createdDate[20];
+	char assignee[20];
+	char completedDate[20];
+} TodoInfo;
+
+typedef struct {
+	char title[50];
+	TodoStatus status;
+	TodoInfo info;
+} Todo;
+
+void printTodo(Todo todo);
+void testTodoSystem(void);
 
 #endif
 

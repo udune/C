@@ -138,6 +138,9 @@
     <ClInclude Include="output.h" />
     <ClInclude Include="practice.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\..\캡처.PNG" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

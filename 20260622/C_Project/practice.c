@@ -1616,7 +1616,7 @@ void testUnion(void) {
 	printf("mode = %d, enable = %d\n", ctrl.bits.mode, ctrl.bits.enable);
 }
 
-void printTodo(Day day) {
+void printTodoDay(Day day) {
 	switch (day) {
 	case MON:
 		printf("월요일: 주간 업무 계획 세우기\n");
@@ -1648,9 +1648,59 @@ void testEnum(void) {
 	printf("===== 주간 To-Do List =====\n");
 
 	for (day = MON; day <= SUN; day++) {
-		printTodo(day);
+		printTodoDay(day);
 	}
 }
+
+void printTodo(Todo todo)
+{
+	printf("할 일: %s\n", todo.title);
+
+	switch (todo.status)
+	{
+	case TODO_PENDING:
+		printf("상태: 대기\n");
+		printf("생성일: %s\n", todo.info.createdDate);
+		break;
+
+	case TODO_IN_PROGRESS:
+		printf("상태: 진행중\n");
+		printf("담당자: %s\n", todo.info.assignee);
+		break;
+
+	case TODO_DONE:
+		printf("상태: 완료\n");
+		printf("완료일: %s\n", todo.info.completedDate);
+		break;
+	}
+
+	printf("\n");
+}
+
+void testTodoSystem(void) {
+	Todo t1 = {
+		"c 언어 공부",
+		TODO_PENDING
+	};
+	strcpy(t1.info.createdDate, "2026-06-11");
+
+	Todo t2 = {
+		"프로젝트 개발",
+		TODO_IN_PROGRESS
+	};
+	strcpy(t2.info.assignee, "Kim");
+
+	Todo t3 = {
+		"문서 작성",
+		TODO_DONE
+	};
+	strcpy(t3.info.completedDate, "2026-06-10");
+
+	printTodo(t1);
+	printTodo(t2);
+	printTodo(t3);
+}
+
 
 
 
