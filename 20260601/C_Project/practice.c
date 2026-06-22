@@ -1276,24 +1276,88 @@ void Arr2DNameAndArrPtr(void)
 		{1, 2}, {3, 4}, {5, 6}, {7, 8}
 	};
 
+	// 2차원 배열의 이름은 배열의 첫 번째 요소를 가리키는 포인터입니다.
 	int (*ptr)[2];
 	int i;
 
 	ptr = arr1;
 	printf("** case ptr = arr1 **\n");
+	// ptr이 arr1의 첫 번째 요소인 arr1[0]을 가리키므로, ptr[i]는 arr1[i]를 가리킴
 	for (i = 0; i < 2; i++) {
 		printf("%d %d\n", ptr[i][0], ptr[i][1]);
 	}
 
 	ptr = arr2;
 	printf("** case ptr = arr2 **\n");
+	// ptr이 arr2의 첫 번째 요소인 arr2[0]을 가리키므로, ptr[i]는 arr2[i]를 가리킴
 	for (i = 0; i < 3; i++) {
 		printf("%d %d\n", ptr[i][0], ptr[i][1]);
 	}
 
 	ptr = arr3;
 	printf("** case ptr = arr3 **\n");
+	// ptr이 arr3의 첫 번째 요소인 arr3[0]을 가리키므로, ptr[i]는 arr3[i]를 가리킴
 	for (i = 0; i < 4; i++) {
 		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
+}
+
+void ArrPtrAndPtrArr() {
+	int num1 = 10;
+	int num2 = 20;
+	int num3 = 30; 
+	int num4 = 40;
+	int arr2d[2][4] = { {1, 2, 3, 4}, {5, 6, 7, 8} };
+	
+	// 포인터 배열 : 포인터들이 담긴 배열
+	// Parr는 칸이 4개인 배열이고 각 칸이 int*(포인터)이다.
+	// 각 칸은 독립적으로 서로 다른 변수를 가리킬 수 있다.
+	// Parr[0] ==> num1 = 10
+	// Parr[1] ==> num2 = 20
+	// Parr[2] ==> num3 = 30
+	// Parr[3] ==> num4 = 40
+	// ... Parr[i] = &num(i+1)
+	//	
+	// *Parr[0] => 10
+	// *Parr[1] => 20
+	// *Parr[2] => 30
+	// *Parr[3] => 40
+	int* Parr[4] = { &num1, &num2, &num3, &num4 };
+
+	// 배열 포인터 : 배열 하나를 가리키는 포인터
+	// arrP+1이 &arr2d[1][0]과 같게 찍힌다.
+	// *arrP[0] = *(arrP[0]) = *(arr2d[0]) = arr2d[0][0] = 1 -> **arrP
+	// *arrP[1] = *(arrP[1]) = *(arr2d[1]) = arr2d[1][0] = 5 -> *(*(arrP+1))
+	int (*arrP)[4] = arr2d;
+	int (*ptr)[4];
+	int i, j;
+
+	printf("num1: %p \n", (void*)&num1);
+	printf("Parr[0]: %p \n", (void*)Parr[0]);
+	printf("num2: %p \n", (void*)&num2);
+	printf("Parr[1]: %p \n", (void*)Parr[1]);
+	printf("num3: %p \n", (void*)&num3);
+	printf("Parr[2]: %p \n", (void*)Parr[2]);
+	printf("num4: %p \n", (void*)&num4);
+	printf("Parr[3]: %p \n", (void*)Parr[3]);
+	printf("Parr: %p \n", (void*)Parr);
+
+	printf("arr2d[0][0]: %p \n", (void*)&arr2d[0][0]);
+	printf("arrP: %p \n", (void*)arrP);
+	printf("arr2d[1][0]: %p \n", (void*)&arr2d[1][0]);
+	printf("arrP+1: %p \n", (void*)(arrP + 1));
+
+	printf("**arrP: %d *arrP[0] = %d\n", **arrP, *arrP[0]);
+	printf("*(*(arrP+1)) : %d *arrP[1] : %d\n", *(*(arrP + 1)), *arrP[1]);
+	printf("*Parr[0]: %d *Parr[1]:%d *Parr[2]:%d *Parr[3]:%d \n",
+		*Parr[0], *Parr[1], *Parr[2], *Parr[3]);
+
+	ptr = arr2d;
+	printf("** case ptr = arr2d **\n");
+	for (i = 0; i < 2; i++) {
+		for (j = 0; j < 4; j++) {
+			printf("arrP[%d][%d] : %d ", i, j, ptr[i][j]);
+		}
+		printf("\n");
 	}
 }

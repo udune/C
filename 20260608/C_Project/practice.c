@@ -619,7 +619,7 @@ void StringSwap() {
 	}
 
 	// korea로 입력하면 rev 배열에는 'a', 'e', 'r', 'o', 'k'이 저장됨
-	// rev[5]는 rev 배열의 마지막 요소이므로, rev[5]에 null 문자('\0')을 추가하여 문자열이 제대로 종료되도록 함
+	// rev[5]는 rev 배열의 마지막 요소이므로, rev[5]에 null 문자('\0')를 추가하여 문자열이 제대로 종료되도록 함
 	rev[len] = '\0';
 
 	printf("입력한 문자열 : %s\n", str);
@@ -1090,239 +1090,274 @@ void mainScoreCalc() {
 	printf("평균 : %.2f\n", average);
 }
 
-void Arr2DAccessType(void)
-{
-	int arr[3][2] = { {1, 2}, {3, 4}, {5, 6} };
-
-	// 초기 값 확인 (arr[2][1] == 6)
-	printf("값: %d\n\n", arr[2][1]);
-
-	// [1] 일반적인 2차원 배열 표기
-	arr[2][1] = 7;
-	printf("[1] arr[2][1] = 7 수행 후: %d\n", arr[2][1]);
-
-	// [2] 배열 이름을 포인터처럼 해석
-	// arr + 2  -> 3번째 행 주소
-	// *(arr+2) -> 3번째 행의 시작 주소(int*)
-	// (*(arr+2))[1] -> 3번째 행의 2번째 열
-	(*(arr + 2))[1] = 70;
-	printf("[2] (*(arr + 2))[1] = 70 수행 후: %d\n", arr[2][1]);
-
-	// [3] arr[2]는 3번째 행의 시작 주소(int*)로 decay
-	// *(arr[2] + 1) == arr[2][1]
-	*(arr[2] + 1) = 700;
-	printf("[3] *(arr[2] + 1) = 700 수행 후: %d\n", arr[2][1]);
-
-	// [4] 순수 포인터 형태
-	// *(*(arr + 2) + 1) == arr[2][1]
-	*(*(arr + 2) + 1) = 777;
-	printf("[4] *(*(arr + 2) + 1) = 777 수행 후: %d\n\n", arr[2][1]);
-
-	// 네 가지 표현의 실제 주소가 같은지 비교
-	printf("--- 네 가지 표현의 실제 메모리 주소 비교 ---\n");
-	printf("&arr[2][1]           의 주소: %p\n", (void*)&arr[2][1]);
-	printf("(*(arr + 2)) + 1     의 주소: %p\n", (void*)((*(arr + 2)) + 1));
-	printf("arr[2] + 1           의 주소: %p\n", (void*)(arr[2] + 1));
-	printf("*(arr + 2) + 1       의 주소: %p\n", (void*)(*(arr + 2) + 1));
-}
-
-void scoreCalc(int* score, int* sum, double* average)
-{
+void scoreCalc(int* score, int* sum, double* average) {
 	for (int i = 0; i < 5; i++) {
 		*sum += *(score + i);
 	}
-
-	*average = (double)*sum / 5.0;
+	
+	*average = (double) *sum / 5.0;
 }
 
-// 2차원 배열(팀 x 인원) 점수를 포인터 표현으로 분석하는 함수
-// arrP[i][j] == *(*(arrP + i) + j)
-void analyzeScores(int (*arrP)[4], int rows)
+void doublePointer() {
+	// 이중 포인터는 포인터를 가리키는 포인터입니다.
+	int num = 10;
+
+	// ptr은 int형 포인터 변수입니다. ptr은 num 변수의 주소를 저장합니다.
+	int* ptr = &num;
+
+	// dptr은 int형 이중 포인터 변수입니다. dptr은 ptr 변수의 주소를 저장합니다.
+	int** dptr = &ptr;
+
+	printf("&num = %p\n", &num); // num 변수의 주소값을 출력합니다.
+	printf("ptr = %p\n", ptr); // ptr이 가리키는 주소값을 출력합니다.
+	printf("&ptr = %p\n", &ptr); // ptr 변수의 주소값을 출력합니다. &ptr == &dptr이므로, ptr과 dptr이 가리키는 주소값은 같습니다.
+	printf("dptr = %p\n", dptr); // dptr이 가리키는 주소값을 출력합니다. dptr == &ptr이므로, dptr이 가리키는 주소는 ptr의 주소(&ptr)와 같습니다.
+	printf("&dptr = %p\n", &dptr); // dptr 변수의 주소값을 출력합니다. &ptr == &dptr이므로, ptr과 dptr이 가리키는 주소값은 같습니다.
+
+	// num, *ptr, **dptr의 값을 출력합니다.
+	printf("1. num = %d\n, *ptr = %d, **dptr = %d\n", num, *ptr, **dptr);
+
+	// ptr을 통해 num의 값을 변경합니다.
+	*ptr = 20;
+	printf("2. num = %d\n, *ptr = %d, **dptr = %d\n", num, *ptr, **dptr);
+
+	// dptr을 통해 num의 값을 변경합니다.
+	**dptr = 30;
+	printf("3. num = %d\n, *ptr = %d, **dptr = %d\n", num, *ptr, **dptr);
+}
+
+void SwapPointer() {
+	int num1 = 10;
+	int num2 = 20;
+
+	int* ptr1 = &num1;
+	int* ptr2 = &num2;
+
+	printf("ptr1 = %p, ptr2 = %p\n", ptr1, ptr2);
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+
+	// ptr1, ptr2가 가진 복사된 주소값을 복사해서 p1, p2에 넣는다.
+	// 함수 안에서 p1과 p2를 바꿔도 복사본끼리의 교환일 뿐 원본 ptr1, ptr2는 그대로다.
+	SwapPtr(ptr1, ptr2);
+
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+}
+
+void SwapDPointer() {
+	int num1 = 10;
+	int num2 = 20;
+
+	// ptr1과 ptr2는 num1과 num2의 주소를 저장하는 포인터입니다.
+	int* ptr1 = &num1;
+	int* ptr2 = &num2;
+
+	printf("ptr1 = %p, ptr2 = %p\n", ptr1, ptr2);
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+
+	// ptr1, ptr2가 사는 주소를 넘긴다. 
+	// p1과 p2는 포인터를 직접 가리키게 되고 
+	// *p1, *p2로 원본 포인터의 내용을 진짜로 바꿀수 있다.
+	SwapDPtr(&ptr1, &ptr2);
+
+	printf("*ptr1 = %d, *ptr2 = %d\n", *ptr1, *ptr2);
+}
+
+// SwapPtr 함수는 포인터를 사용하여 
+// 포인터의 값을 전달받아 포인터 자체를 교환하는 함수입니다.
+void SwapPtr(int* p1, int* p2) {
+	int* temp = p1;
+	p1 = p2;
+	p2 = temp;
+}
+
+// SwapDPtr 함수는 이중 포인터를 사용하여 
+// 포인터의 주소를 전달받아 포인터 자체를 교환하는 함수입니다.
+void SwapDPtr(int** p1, int** p2) {
+	int* temp = *p1;
+	*p1 = *p2;
+	*p2 = temp;
+}
+
+void SwapChar()
 {
-	double averages[2] = { 0.0, 0.0 };
-	int maxScores[2] = { 0, 0 };
+	int n = 3;
 
-	// 각 팀(행)별 합계/평균/최고점 계산
-	for (int i = 0; i < rows; i++) {
-		int sum = 0;
+	char** str;
 
-		// 각 행의 첫 번째 원소로 최고점 초기화
-		maxScores[i] = *(*(arrP + i) + 0);
+	str = (char**)malloc(n * sizeof(char*));
 
-		for (int j = 0; j < 4; j++) {
-			// arrP[i][j]를 순수 포인터 수식으로 접근
-			int currentScore = *(*(arrP + i) + j);
-			sum += currentScore;
+	// str[i]와 *(str+i)는 같은 주소값을 가리킴
 
-			// 행별 최고 점수 갱신
-			if (currentScore > maxScores[i]) {
-				maxScores[i] = currentScore;
-			}
-		}
+	// &str은 str 변수 자신이 사는 주소값을 가리킴
+	// str은 포인터 배열의 시작 주소값을 가리킴(첫번째 malloc 결과)
+	// str + 1, str + 2는 배열에서 한 칸씩 건너뛴 주소. str은 char*를 가리키므로 한 칸이 sizeof(char*)이다.
+	// str[i]는 각 문자열 버퍼의 주소
+	// *str은 str[0]이 가리키는 문자열 버퍼의 주소
+	// *(str + 1)은 str[1]이 가리키는 문자열 버퍼의 주소
+	// *(str + 2)는 str[2]이 가리키는 문자열 버퍼의 주소
+	printf("&str : %p\n", &str);
+	printf("str : %p\n", str);
+	printf("str + 1 : %p\n", str + 1);
+	printf("str + 2 : %p\n", str + 2);
 
-		// 인원 수 4명 기준 평균 계산
-		averages[i] = (double)sum / 4.0;
+	for (int i = 0; i < n; i++) {
+		str[i] = (char*)malloc(100 * sizeof(char));
+		printf("str[%d] : %p\n", i, str[i]);
 	}
 
-	printf("A팀 평균 점수: %.2f점\n", averages[0]);
-	printf("B팀 평균 점수: %.2f점\n", averages[1]);
+	printf("*str : %p\n", *str);
+	printf("*(str + 1) : %p\n", *(str + 1));
+	printf("*(str + 2) : %p\n", *(str + 2));
 
-	// 평균이 더 높은 팀과 해당 팀의 최고점 출력
-	if (averages[0] > averages[1]) {
-		printf("평균이 더 높은 팀: A팀 , 최고 점수: %d점\n", maxScores[0]);
-	}
-	else if (averages[1] > averages[0]) {
-		printf("평균이 더 높은 팀: B팀 , 최고 점수: %d점\n", maxScores[1]);
-	}
-	else {
-		printf("두 팀의 평균이 같습니다.\n");
-		// 평균이 같으면 전체 최고점 출력
-		int absoluteMax = (maxScores[0] > maxScores[1]) ? maxScores[0] : maxScores[1];
-		printf("전체 최고 점수: %d점\n", absoluteMax);
-	}
-}
+	strcpy(str[0], "apple");
+	strcpy(str[1], "banana");
+	strcpy(str[2], "cherry");
 
-// 입력 + 분석 실행 함수
-// score[i][j] == *(*(arr1 + i) + j)
-void scorePointerPractice(void)
-{
-	int score[2][4];
-	int (*arr1)[4] = score;
-
-	// A팀 점수 입력 (포인터 표현)
-	printf("A팀 4명의 점수를 입력하세요 : ");
-	for (int j = 0; j < 4; j++) {
-		scanf("%d", *(arr1 + 0) + j);
+	for (int i = 0; i < n; i++) {
+		printf("%s\n", str[i]);
 	}
 
-	// B팀 점수 입력 (포인터 표현)
-	printf("B팀 4명의 점수를 입력하세요 : ");
-	for (int j = 0; j < 4; j++) {
-		scanf("%d", *(arr1 + 1) + j);
-	}
-
-	// 분석 함수 호출
-	analyzeScores(score, 2);
+	freeSwapCharMemory(str, n);
+	str = NULL;
 }
 
-// 덧셈 함수
-static int add(int a, int b)
-{
-	return a + b;
-}
-
-// 뺄셈 함수
-static int sub(int a, int b)
-{
-	return a - b;
-}
-
-// 곱셈 함수
-static int mul(int a, int b)
-{
-	return a * b;
-}
-
-// 나눗셈 함수 (0으로 나누기 방지)
-static int div1(int a, int b)
-{
-	if (b == 0) {
-		printf("오류: 0으로 나눌 수 없습니다.\n");
-		return 0;
-	}
-
-	return a / b;
-}
-
-// 함수 포인터(점프 테이블) 실습
-void MethodPointer()
-{
-	int op_index;
-	int num1;
-	int num2;
-	int result;
-
-	// 함수 포인터 배열(점프 테이블)
-	// 0:add, 1:sub, 2:mul, 3:div1
-	int (*jump_table[4])(int, int) = { add, sub, mul, div1 };
-
-	printf("=== 함수 포인터 계산기 ===\n");
-
-	while (1) {
-		printf("0:덧셈, 1:뺄셈, 2:곱셈, 3:나눗셈, 4:종료 : ");
-		scanf("%d", &op_index);
-
-		// 범위 검증
-		if (op_index < 0 || op_index > 4) {
-			printf("올바른 번호가 아닙니다.\n");
-			continue;
-		}
-
-		// 종료 선택
-		if (op_index == 4) {
-			printf("계산기를 종료합니다.\n");
-			break;
-		}
-
-		printf("두 정수를 입력하세요 (예: 10 5) : ");
-		scanf("%d %d", &num1, &num2);
-
-		// 함수 포인터 배열을 통한 호출
-		// switch문 없이 인덱스로 바로 해당 함수 실행
-		result = jump_table[op_index](num1, num2);
-
-		printf("연산 결과: %d\n\n", result);
-	}
-}
-
-// 센서 필터 함수 포인터 타입 정의
-// int를 받아 int를 반환하는 필터 함수 시그니처
-typedef int (*FilterFunc)(int);
-
-// 원본 데이터를 그대로 통과시키는 필터(일반 모드)
-static int bypass_filter(int raw_data)
-{
-	return raw_data;
-}
-
-// 임계값 제한 필터(안전 모드)
-// 값이 100을 넘으면 100으로 제한
-static int limit_filter(int raw_data)
-{
-	if (raw_data > 100) {
-		return 100;
-	}
-
-	return raw_data;
-}
-
-// 센서 처리 공통 함수
-// callback으로 전달받은 필터 알고리즘을 적용한다.
-static void process_sensor(int raw_value, FilterFunc callback)
-{
-	// 안전을 위해 NULL 콜백 방어
-	if (callback == NULL) {
-		printf("오류: 필터 콜백이 NULL입니다.\n");
+static void freeSwapCharMemory(char** str, int n) {
+	if (str == NULL) {
 		return;
 	}
 
-	printf("원본 데이터: %d\n", raw_value);
-
-	// 함수 포인터로 필터 함수 호출
-	int filtered_value = callback(raw_value);
-
-	printf("가공된 데이터: %d\n\n", filtered_value);
+	for (int i = 0; i < n; i++) {
+		free(str[i]);
+	}
 }
 
-// 함수 포인터 기반 메카트로닉스/센서 응용 예제
-void SensorFilterPointerPractice(void)
+void DoublePointer()
 {
-	int sensor_signal = 135;
+	char base_str[100];
+	char* str_ptr = base_str;
 
-	printf("1: 일반 모드\n");
-	process_sensor(sensor_signal, bypass_filter);
+	printf("문자열 입력 : ");
+	if (fgets(str_ptr, sizeof(base_str), stdin) == NULL) {
+		return;
+	}
+	str_ptr[strcspn(str_ptr, "\n")] = '\0';
 
-	printf("2: 안전 모드\n");
-	process_sensor(sensor_signal, limit_filter);
+	printf("변경 전 str_ptr이 가리키는 문자열 : ");
+	puts(str_ptr);
+
+	updateString(&str_ptr);
+
+	printf("변경 후 str_ptr이 가리키는 문자열 : ");
+	puts(str_ptr);
 }
 
+void updateString(char** dest_ptr)
+{
+	char input_buffer[100];
+
+	printf("변경할 문자열 입력 : ");
+	if (fgets(input_buffer, sizeof(input_buffer), stdin) == NULL) {
+		return;
+	}
+	input_buffer[strcspn(input_buffer, "\n")] = '\0';
+
+	strcpy(*dest_ptr, input_buffer);
+}
+
+void Arr2DNameAndArrPtr(void)
+{
+	int arr1[2][2] = {
+		{1, 2}, {3, 4}
+	};
+	int arr2[3][2] = {
+		{1, 2}, {3, 4}, {5, 6}
+	};
+	int arr3[4][2] = {
+		{1, 2}, {3, 4}, {5, 6}, {7, 8}
+	};
+
+	// 2차원 배열의 이름은 배열의 첫 번째 요소를 가리키는 포인터입니다.
+	int (*ptr)[2];
+	int i;
+
+	ptr = arr1;
+	printf("** case ptr = arr1 **\n");
+	// ptr이 arr1의 첫 번째 요소인 arr1[0]을 가리키므로, ptr[i]는 arr1[i]를 가리킴
+	for (i = 0; i < 2; i++) {
+		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
+
+	ptr = arr2;
+	printf("** case ptr = arr2 **\n");
+	// ptr이 arr2의 첫 번째 요소인 arr2[0]을 가리키므로, ptr[i]는 arr2[i]를 가리킴
+	for (i = 0; i < 3; i++) {
+		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
+
+	ptr = arr3;
+	printf("** case ptr = arr3 **\n");
+	// ptr이 arr3의 첫 번째 요소인 arr3[0]을 가리키므로, ptr[i]는 arr3[i]를 가리킴
+	for (i = 0; i < 4; i++) {
+		printf("%d %d\n", ptr[i][0], ptr[i][1]);
+	}
+}
+
+void ArrPtrAndPtrArr() {
+	int num1 = 10;
+	int num2 = 20;
+	int num3 = 30; 
+	int num4 = 40;
+	int arr2d[2][4] = { {1, 2, 3, 4}, {5, 6, 7, 8} };
+	
+	// 포인터 배열 : 포인터들이 담긴 배열
+	// Parr는 칸이 4개인 배열이고 각 칸이 int*(포인터)이다.
+	// 각 칸은 독립적으로 서로 다른 변수를 가리킬 수 있다.
+	// Parr[0] ==> num1 = 10
+	// Parr[1] ==> num2 = 20
+	// Parr[2] ==> num3 = 30
+	// Parr[3] ==> num4 = 40
+	// ... Parr[i] = &num(i+1)
+	//	
+	// *Parr[0] => 10
+	// *Parr[1] => 20
+	// *Parr[2] => 30
+	// *Parr[3] => 40
+	int* Parr[4] = { &num1, &num2, &num3, &num4 };
+
+	// 배열 포인터 : 배열 하나를 가리키는 포인터
+	// arrP+1이 &arr2d[1][0]과 같게 찍힌다.
+	// *arrP[0] = *(arrP[0]) = *(arr2d[0]) = arr2d[0][0] = 1 -> **arrP
+	// *arrP[1] = *(arrP[1]) = *(arr2d[1]) = arr2d[1][0] = 5 -> *(*(arrP+1))
+	int (*arrP)[4] = arr2d;
+	int (*ptr)[4];
+	int i, j;
+
+	printf("num1: %p \n", (void*)&num1);
+	printf("Parr[0]: %p \n", (void*)Parr[0]);
+	printf("num2: %p \n", (void*)&num2);
+	printf("Parr[1]: %p \n", (void*)Parr[1]);
+	printf("num3: %p \n", (void*)&num3);
+	printf("Parr[2]: %p \n", (void*)Parr[2]);
+	printf("num4: %p \n", (void*)&num4);
+	printf("Parr[3]: %p \n", (void*)Parr[3]);
+	printf("Parr: %p \n", (void*)Parr);
+
+	printf("arr2d[0][0]: %p \n", (void*)&arr2d[0][0]);
+	printf("arrP: %p \n", (void*)arrP);
+	printf("arr2d[1][0]: %p \n", (void*)&arr2d[1][0]);
+	printf("arrP+1: %p \n", (void*)(arrP + 1));
+
+	printf("**arrP: %d *arrP[0] = %d\n", **arrP, *arrP[0]);
+	printf("*(*(arrP+1)) : %d *arrP[1] : %d\n", *(*(arrP + 1)), *arrP[1]);
+	printf("*Parr[0]: %d *Parr[1]:%d *Parr[2]:%d *Parr[3]:%d \n",
+		*Parr[0], *Parr[1], *Parr[2], *Parr[3]);
+
+	ptr = arr2d;
+	printf("** case ptr = arr2d **\n");
+	for (i = 0; i < 2; i++) {
+		for (j = 0; j < 4; j++) {
+			printf("arrP[%d][%d] : %d ", i, j, ptr[i][j]);
+		}
+		printf("\n");
+	}
+}

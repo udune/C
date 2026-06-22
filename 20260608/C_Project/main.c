@@ -53,13 +53,7 @@ int main(void) {
 	/*DoublePointer();*/
 
 	/*Arr2DNameAndArrPtr();*/
-	/*ArrPtrAndPtrArr();*/
-
-	/*Arr2DArrayFunctionPractice();*/
-	/*Arr2DAccessType();*/
-	/*scorePointerPractice();*/
-	/*MethodPointer();*/
-	SensorFilterPointerPractice();
+	ArrPtrAndPtrArr();
 
 	return 0;
 }

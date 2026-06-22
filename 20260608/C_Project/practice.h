@@ -64,16 +64,4 @@ void freeSwapCharMemory(char** str, int n);
 void DoublePointer();
 void updateString(char** dest_ptr);
 
-
-void printArray1(int arr[][4], int rows);
-void SumArray(int (*arr)[4], int rows, int* sum);
-int SumArray1(int (*arr)[4], int rows);
-void Arr2DArrayFunctionPractice();
-void Arr2DAccessType();
-void analyzeScores(int (*arrP)[4], int rows);
-void scorePointerPractice(void);
-
-void MethodPointer();
-void SensorFilterPointerPractice(void);
-
 #endif

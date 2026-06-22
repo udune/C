@@ -64,4 +64,82 @@ void freeSwapCharMemory(char** str, int n);
 void DoublePointer();
 void updateString(char** dest_ptr);
 
+// 구조체 정의
+struct Student {
+	char name[20];
+	int studen_id;
+	char phone_number[20];
+};
+
+void StudentInfo(void);
+
+struct Book {
+	char title[40];
+	char author[20];
+	int price;
+};
+
+void BookInfo(void);
+
+#define MAX_PRODUCTS 3
+
+struct Product {
+	char name[20];
+	int price;
+};
+
+void AnalyzeMart(void);
+
+typedef struct person
+{
+	char name[20];
+	char phone[20];
+	int age;
+} Person;
+
+void showStudentInfo(Person person);
+Person readStudentInfo(void);
+void studentStructPractice(void);
+
+typedef struct {
+	int xpos;
+	int ypos;
+} Position;
+
+void print_position(const Position* ptr);
+void move_position(Position* ptr, int x_delta, int y_delta);
+void TestStructPointer(void);
+
+typedef struct {
+	char* name;
+} Student;
+
+void StructMemberPointer(void);
+
+typedef struct User
+{
+	char name[20];
+	struct User* next;
+} User;
+
+void StructPointerMemberExample(void);
+
+// 계좌 구조체 정의
+typedef struct {
+	char account_num[20]; // 계좌번호
+	int balance;          // 잔액
+} Account;
+
+// 고객 구조체 정의 (내부에 계좌 구조체 포인터를 멤버로 가짐)
+typedef struct {
+	char name[20];        // 고객 이름
+	Account* my_account;  // 소유한 계좌의 주소를 가리킬 포인터 멤버
+} Customer;
+
+void printCustomerInfo(Customer* c_ptr);
+void testBankSystem(void);
+
 #endif
+
+
+
