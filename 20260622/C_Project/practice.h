@@ -187,6 +187,8 @@ typedef struct {
 void printTodo(Todo todo);
 void testTodoSystem(void);
 
+void DynamicMemoryEx1(void);
+
 #endif
 
 

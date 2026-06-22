@@ -67,7 +67,8 @@ int main(void) {
 	//testBankSystem();
 	//testUnion();
 	//testEnum();
-	testTodoSystem();
+	//testTodoSystem();
+	DynamicMemoryEx1();
 
 	return 0;
 }

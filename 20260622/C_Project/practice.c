@@ -1701,6 +1701,41 @@ void testTodoSystem(void) {
 	printTodo(t3);
 }
 
+void DynamicMemoryEx1(void)
+{
+	int student_count;
+	int* scores;
+	int sum = 0;
+
+	printf("입력할 학생 수는 몇 명인가요? : ");
+	scanf("%d", &student_count);
+
+	// 입력받은 학생 수만큼 정확하게 힙(Heap) 영역에 메모리 할당
+	scores = (int*)malloc(sizeof(int) * student_count);
+
+	// [예외 처리] 메모리가 부족하면 malloc은 NULL을 반환
+	if (scores == NULL) {
+		printf("메모리 할당에 실패했습니다.\n");
+		return; // 프로그램 비정상 종료 (void 반환 형식이므로 return; 사용)
+	}
+
+	// 동적 할당된 배열은 일반 배열처럼 [ ]를 사용할 수 있음
+	for (int i = 0; i < student_count; i++) {
+		printf("%d번째 학생 성적 입력: ", i + 1);
+		scanf("%d", &scores[i]);
+		sum += scores[i];
+	}
+
+	printf("\n--- 결과 ---\n");
+	printf("총점: %d\n", sum);
+	printf("평균: %.2f\n", (float)sum / student_count);
+
+	// 사용이 끝난 메모리는 반드시 해제
+	free(scores);
+	scores = NULL; // 가리키던 주소를 지워 안전하게 마무리
+}
+
+
 
 
 
