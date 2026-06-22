@@ -1616,5 +1616,42 @@ void testUnion(void) {
 	printf("mode = %d, enable = %d\n", ctrl.bits.mode, ctrl.bits.enable);
 }
 
+void printTodo(Day day) {
+	switch (day) {
+	case MON:
+		printf("월요일: 주간 업무 계획 세우기\n");
+		break;
+	case TUE:
+		printf("화요일: 프로젝트 개발\n");
+		break;
+	case WED:
+		printf("수요일: 팀 회의 참석\n");
+		break;
+	case THU:
+		printf("목요일: 문서 작성\n");
+		break;
+	case FRI:
+		printf("금요일: 주간 업무 정리\n");
+		break;
+	case SAT:
+		printf("토요일: 운동하기\n");
+		break;
+	case SUN:
+		printf("일요일: 휴식 및 독서\n");
+		break;
+	}
+}
+
+void testEnum(void) {
+	Day day;
+
+	printf("===== 주간 To-Do List =====\n");
+
+	for (day = MON; day <= SUN; day++) {
+		printTodo(day);
+	}
+}
+
+
 
 

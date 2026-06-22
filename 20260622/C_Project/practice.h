@@ -152,6 +152,19 @@ typedef union {
 
 void testUnion(void);
 
+typedef enum {
+	MON = 0,
+	TUE,
+	WED,
+	THU,
+	FRI,
+	SAT,
+	SUN
+} Day;
+
+void printTodo(Day day);
+void testEnum(void);
+
 #endif
 
 
