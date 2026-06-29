@@ -1959,7 +1959,7 @@ void RegisterStudentScore(Students* students) {
 		safe_scanf("%d", &students[i].id);
 
 		printf("국어 영어 수학 과학 점수: ");
-		scanf("%d %d %d %d",
+		safe_scanf("%d %d %d %d",
 			&students[i].kor,
 			&students[i].eng,
 			&students[i].math,
