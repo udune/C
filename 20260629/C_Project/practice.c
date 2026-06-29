@@ -1646,21 +1646,21 @@ void testTodoSystem(void) {
 	Todo t1 = {
 		"c 언어 공부",
 		TODO_PENDING,
-		{0}
+		{{0}}
 	};
 	strcpy(t1.info.createdDate, "2026-06-11");
 
 	Todo t2 = {
 		"프로젝트 개발",
 		TODO_IN_PROGRESS,
-		{0}
+		{{0}}
 	};
 	strcpy(t2.info.assignee, "Kim");
 
 	Todo t3 = {
 		"문서 작성",
 		TODO_DONE,
-		{0}
+		{{0}}
 	};
 	strcpy(t3.info.completedDate, "2026-06-10");
 
