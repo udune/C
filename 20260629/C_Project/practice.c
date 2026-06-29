@@ -1953,10 +1953,10 @@ void RegisterStudentScore(Students* students) {
 		printf("\n[%d번째 학생]\n", i + 1);
 
 		printf("이름: ");
-		scanf("%19s", students[i].name);
+		safe_scanf("%19s", students[i].name);
 
 		printf("학번: ");
-		scanf("%d", &students[i].id);
+		safe_scanf("%d", &students[i].id);
 
 		printf("국어 영어 수학 과학 점수: ");
 		scanf("%d %d %d %d",
@@ -2010,7 +2010,7 @@ void ReadStudentScore(Students* students) {
 		if (fgets(line, sizeof(line), fp) == NULL) {
 			break;
 		}
-		if (sscanf(line, "%[^,],%d,%d,%d,%d,%d",
+		if (sscanf(line, "%19[^,],%d,%d,%d,%d,%d",
 			students[count].name,
 			&students[count].id,
 			&students[count].kor,
