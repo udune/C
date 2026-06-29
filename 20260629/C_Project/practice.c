@@ -1,4 +1,6 @@
 ﻿#include "practice.h"
+#include "input.h"     // getChar 선언
+#include "output.h"    // printChar 선언
 #include <stdarg.h>
 
 static void freeSwapCharMemory(char** str, int n);
@@ -614,7 +616,9 @@ void StringFunc() {
 	char str[100];
 
 	printf("문자열 입력 : \n");
-	gets(str);
+	if (fgets(str, sizeof(str), stdin) != NULL) {
+		str[strcspn(str, "\n")] = '\0';   // 입력 끝 개행 제거
+	}
 
 	printf("입력한 문장 : \n");
 	puts(str);
@@ -821,13 +825,16 @@ void pointerInit() {
 	// ptr은 num 변수의 주소를 저장합니다.
 	int* ptr = &num;
 
-	// num이 가리키는 주소값을 출력합니다.
-	printf("num: %d\n", &num);
+	printf("num 값:          %d\n", num);          // 변수의 값
+	printf("num 주소 (&num): %p\n", (void*)&num);  // 변수의 주소
+	printf("ptr 값:          %p\n", (void*)ptr);   // ptr이 담은 주소 (== &num)
+	printf("*ptr (역참조):   %d\n", *ptr);          // ptr이 가리키는 값 (== num)
+	printf("ptr 주소 (&ptr): %p\n", (void*)&ptr);  // ptr 변수 자신의 주소 (≠ &num)
 
-	// ptr이 가리키는 주소값을 출력합니다.
-	printf("*ptr: %d\n\n", &ptr);
-
-	// &num == &ptr이므로, num과 ptr이 가리키는 주소값은 같습니다.
+	// 관계 정리:
+	//   ptr == &num   (참: ptr은 num의 주소를 담는다)
+	//   *ptr == num   (참: 역참조하면 num의 값)
+	//   &ptr != &num  (참: ptr과 num은 서로 다른 변수다)
 
 	// ptr 변수에 저장된 주소값을 출력합니다.
 	printf("ptr: %p\n", ptr);
@@ -1023,7 +1030,7 @@ void printArray2(int arr[], int size) {
 
 	for (int i = 0; i < size; i++) {
 		printf("arr[%d] = %d \n", i, arr[i]);
-		printf("arr+%d : %p \n\n", i, *(arr + i));
+		printf("arr+%d : %p \n\n", i, (void*)(arr + i));
 	}
 
 	arr[0] = 11;
@@ -1638,19 +1645,22 @@ void printTodo(Todo todo)
 void testTodoSystem(void) {
 	Todo t1 = {
 		"c 언어 공부",
-		TODO_PENDING
+		TODO_PENDING,
+		{0}
 	};
 	strcpy(t1.info.createdDate, "2026-06-11");
 
 	Todo t2 = {
 		"프로젝트 개발",
-		TODO_IN_PROGRESS
+		TODO_IN_PROGRESS,
+		{0}
 	};
 	strcpy(t2.info.assignee, "Kim");
 
 	Todo t3 = {
 		"문서 작성",
-		TODO_DONE
+		TODO_DONE,
+		{0}
 	};
 	strcpy(t3.info.completedDate, "2026-06-10");
 

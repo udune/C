@@ -1,9 +1,9 @@
-﻿# C_Project 2차 패치 문서
+﻿# C_Project 3차 패치 문서
 
-> 대상 저장소: `udune/C` — `C_Project` (기준 스냅샷: `20260629/C_Project`, 1차 패치 반영본)
+> 대상 저장소: `udune/C` — `C_Project` (기준 스냅샷: `20260629/C_Project`, 1·2차 패치 반영본)
 > 작성일: 2026-06-29
-> 목적: 1차 패치 반영 후 **빌드 검증 + 재분석** 과정에서 발견된 잔여 이슈의 수정 가이드.
-> 1차 6개 항목은 모두 반영 완료(검증 끝). 본 문서는 그 외 항목만 다룬다.
+> 목적: 1·2차 패치로 빌드 에러가 0이 된 뒤, **컴파일 경고 레벨을 `-Wall -Wextra`로 올려** 드러난 잔여 이슈의 수정 가이드.
+> 배경: 1·2차 때는 `freeSwapCharMemory` 빌드 에러가 전체 컴파일을 막아 경고 분석까지 도달하지 못했다. 2차에서 그 에러가 해소되면서 아래 항목들이 비로소 노출됐다.
 
 ---
 
@@ -11,175 +11,180 @@
 
 | # | 이슈 | 심각도 | 위치 | 유형 |
 |---|------|--------|------|------|
-| A | `freeSwapCharMemory` — `static` 정의 vs 비-static 선언 충돌 | **높음** | `practice.h:63` / `practice.c:1214` | 빌드/이식성 |
-| B | `sizeof` 결과를 `%d`로 출력 | 중간 | `practice.c::ArrayStringInit` (4곳) | 이식성/정확성 |
-| C | 미사용 변수 `off` | 낮음 | `practice.c::boolPractice` | 정리 |
-| D | `safe_scanf` 설계 검토 (`#define scanf` 표준명 가림 + `input.c` 중복) | 중간 | `practice.c:4~37` | 설계/표준 준수 |
+| E | `gets()` 사용 — 무제한 입력 (C11 삭제 함수) | **높음** | `practice.c:617` `StringFunc()` | 보안/안정성 |
+| F | `getChar`/`printChar` 암시적 선언 | 중간 | `practice.c:591,596` `CharFunction()` | 빌드/정확성 |
+| G | 포인터 예제의 포맷·라벨·주석 오류 | 중간(교육적) | `practice.c:825,828` `pointerInit()` / `1026` `printArray2()` | 정확성/학습 |
+| H | `Todo` 공용체 초기화 누락 경고 | 낮음 | `practice.c::testTodoSystem` | 정리 |
 
-권장 처리 순서: **A → D → B → C**
+권장 처리 순서: **E → F → G → H**
 
-> 비고: A는 MSVC에서는 경고로 통과하지만 gcc/clang에서는 **컴파일 에러로 빌드 실패**한다(실측 확인). 이식성을 고려하면 가장 먼저 처리할 항목이다.
+> 참고: 본 저장소는 두 차례에 걸쳐 `scanf`를 `%99s`/`safe_scanf`로 강화해 버퍼 오버플로를 제거했다. E의 `gets()`는 그 노력과 정면으로 모순되는 단일 취약점이므로 **최우선**으로 처리한다.
 
 ---
 
-## A. `freeSwapCharMemory` — `static` 정의 vs 비-static 선언 충돌
+## E. `gets()` 사용 — 무제한 입력
 
-**위치**: 선언 `practice.h:63`, 정의 `practice.c:1214`, 호출 `practice.c:1210` (호출은 `practice.c` 내부 한 곳뿐)
+**위치**: `practice.c:617`, `StringFunc()`
 
-**문제**: 헤더에는 외부 연결(external linkage)로 선언돼 있는데, 정의는 내부 연결(`static`)로 돼 있다. 표준상 모순된 선언이며, MSVC는 경고로 넘기지만 gcc는 다음과 같이 거부한다.
+**문제**: `gets()`는 입력 길이를 전혀 제한하지 않아, 버퍼 크기를 넘는 입력이 들어오면 그대로 스택을 침범한다. 위험성 때문에 **C11에서 표준 라이브러리에서 삭제**됐고, gcc는 링크 시 다음 경고를 낸다.
 
 ```
-practice.c:1214:13: error: static declaration of 'freeSwapCharMemory' follows non-static declaration
-```
-
-**판단 근거**: `freeSwapCharMemory`는 `practice.c` 내부(`SwapChar` 등)에서만 호출되고 외부 파일에서 쓰이지 않는다. 따라서 **내부 전용 헬퍼**로 보고 양쪽을 `static`으로 통일하는 것이 가장 깔끔하다(헤더에서 선언 제거).
-
-```c
-// before  (practice.h:63)
-void freeSwapCharMemory(char** str, int n);
+warning: the `gets' function is dangerous and should not be used.
+warning: implicit declaration of function 'gets'; did you mean 'fgets'?
 ```
 
 ```c
-// after  (practice.h)  — 외부에서 안 쓰므로 헤더 선언 삭제
-// (해당 줄 제거)
+// before
+void StringFunc() {
+    char str[100];
+    printf("문자열 입력 : \n");
+    gets(str);                 // ← 길이 제한 없음
+    printf("입력한 문장 : \n");
+    puts(str);
+}
 ```
 
 ```c
-// practice.c — 정의는 static 유지 (단, 호출보다 위에 와야 함, 아래 주의 참고)
-static void freeSwapCharMemory(char** str, int n) {
-    if (str == NULL) {
-        return;
+// after  — fgets로 교체 (버퍼 크기 전달 + 개행 제거)
+void StringFunc() {
+    char str[100];
+    printf("문자열 입력 : \n");
+    if (fgets(str, sizeof(str), stdin) != NULL) {
+        str[strcspn(str, "\n")] = '\0';   // 입력 끝 개행 제거
     }
-    /* ... */
+    printf("입력한 문장 : \n");
+    puts(str);
 }
 ```
 
-> **주의**: 현재 정의(1214행)가 호출(1210행)보다 **아래**에 있다. `static` 함수를 호출보다 뒤에 정의하면 선언이 헤더에서 사라지는 순간 "암시적 선언" 경고/에러가 난다. 두 가지 중 하나로 해결한다.
-> 1. (권장) `practice.c` 상단(`safe_scanf` 부근)에 **static 프로토타입**을 한 줄 추가:
->    ```c
->    static void freeSwapCharMemory(char** str, int n);
->    ```
-> 2. 또는 함수 정의 자체를 첫 호출보다 위로 이동.
->
-> **대안**: 외부 공개가 필요하다면 반대로 정의의 `static`을 제거해 양쪽을 비-static으로 맞춰도 된다. 핵심은 **선언과 정의의 연결 지정을 일치**시키는 것.
+> `fgets`는 `\n`까지 포함해 읽으므로 `strcspn`으로 개행을 잘라낸다. `<string.h>`는 `common.h`에 이미 포함돼 있다.
 
 ---
 
-## D. `safe_scanf` 설계 검토
+## F. `getChar`/`printChar` 암시적 선언
 
-**위치**: `practice.c:4~37`
+**위치**: `practice.c:591, 596`, `CharFunction()`
 
-**현황**: 1차 패치에서 권장한 "각 `scanf` 개별 검사" 대신, 가변 인자 래퍼를 직접 구현하고 매크로로 일괄 치환했다. 발상 자체는 DRY하고 좋다.
+**문제**: `CharFunction()`이 `getChar()`와 `printChar()`를 호출하는데, 두 함수는 각각 `input.h`/`output.h`에 선언돼 있다. 그런데 `practice.c`는 `practice.h`만 포함하므로 컴파일러가 이 둘을 **암시적으로 선언**(반환형 `int`로 가정)한다.
 
-```c
-int safe_scanf(const char* format, ...) {
-    // 포맷에서 변환 지정자 개수를 세고(%% 처리 포함),
-    // vscanf 결과가 기대치와 같을 때까지 버퍼를 비우며 재입력
-}
-#define scanf safe_scanf   // practice.c:37
+```
+warning: implicit declaration of function 'getChar'; did you mean 'getchar'?
+warning: implicit declaration of function 'printChar'; did you mean 'putchar'?
 ```
 
-평가할 점: 포맷 파싱에서 `%%`를 올바르게 건너뛰고, 루프마다 `va_start`/`va_end`를 다시 호출하는 처리(가변 인자 재사용 규칙)도 정확하다. 동작 자체는 견고하다.
-
-다만 **구조상 세 가지**를 짚는다.
-
-### D-1. 표준 라이브러리 이름을 매크로로 가림 (이식성/표준 준수)
-
-`#define scanf safe_scanf`는 표준 라이브러리 식별자 `scanf`를 매크로로 재정의한다. 표준(C11 §7.1.3)상 라이브러리 예약 식별자를 매크로로 덮는 것은 **정의되지 않은 동작(UB)** 영역이다. MSVC/gcc에서는 실제로 동작하지만, 권장되는 방식은 아니다.
+지금은 우연히 동작하지만, 실제 시그니처와 가정된 시그니처가 어긋나면 잘못된 호출 규약으로 깨진다. 헤더를 명시적으로 포함해 해결한다.
 
 ```c
-// after (권장)  — 매크로 치환 대신 함수를 명시적으로 호출
-// #define scanf safe_scanf   ← 제거
-// 호출부:  scanf("%d", &x);   →   safe_scanf("%d", &x);
-```
-
-명시 호출이 번거롭다면, 최소한 매크로 이름을 표준명이 아닌 고유명으로 두는 편이 안전하다(예: 처음부터 `SCANF(...)`로 호출).
-
-### D-2. `input.c`와 검증 로직 중복
-
-`input.c`의 `getInt/getFloat/getChar`는 1차 패치에서 **수동 재입력 루프**로 검증하고, `practice.c`는 `safe_scanf`로 검증한다. 같은 목적의 코드가 두 군데에 서로 다른 방식으로 존재한다. 또한 `safe_scanf`는 `practice.c`에만 있어 `input.c`에는 적용되지 않는다.
-
-**권장**: `safe_scanf`를 공용으로 승격해 한 곳에서만 관리한다.
-
-```c
-// common.h  (또는 util.h 신설)
-int safe_scanf(const char* format, ...);
-```
-```c
-// safe_scanf.c (신설) — 정의 이동
-#include "common.h"
+// before  (practice.c 상단)
+#include "practice.h"
 #include <stdarg.h>
-int safe_scanf(const char* format, ...) { /* 기존 구현 그대로 */ }
 ```
+
 ```c
-// input.c — 수동 루프 대신 공용 래퍼 사용으로 통일
-int getInt() {
-    int a;
-    printf("Enter an integer: ");
-    safe_scanf("%d", &a);   // 검증/재입력은 래퍼가 담당
-    return a;
-}
+// after
+#include "practice.h"
+#include "input.h"     // getChar 선언
+#include "output.h"    // printChar 선언
+#include <stdarg.h>
 ```
-이렇게 하면 검증 정책이 한 곳에 모이고, `input.c`/`practice.c`가 동일하게 동작한다.
 
-### D-3. 부분 매칭 시 전체 재입력 (동작 메모)
-
-`safe_scanf("%19s %d", ...)`에서 문자열만 성공하고 정수가 실패하면(`ret=1`, 기대 `2`), 줄 전체를 비우고 **포맷 전체를 다시** 읽는다. 즉 이미 입력한 문자열도 다시 입력해야 한다. 학습용으로는 무방하나, 다중 입력 폼에서는 사용자 경험이 나빠질 수 있다는 점만 인지한다. (개선하려면 항목 단위로 쪼개 입력받는다.)
+> 대안: 입출력 헬퍼를 프로젝트 전반에서 쓴다면 `input.h`/`output.h`를 `common.h`에 묶어도 된다. 다만 헤더 결합도가 올라가므로, 필요한 곳에서만 포함하는 현재 방식이 더 깔끔하다.
 
 ---
 
-## B. `sizeof` 결과를 `%d`로 출력
+## G. 포인터 예제의 포맷·라벨·주석 오류
 
-**위치**: `practice.c::ArrayStringInit()` — 549, 554, 560, 565행
+포인터를 **가르치는** 함수에서 "주소(address)"와 "값(value)"이 뒤섞여 있다. 입문자가 가장 헷갈리는 지점이므로 동작 여부와 별개로 정확히 잡아야 한다.
 
-**문제**: `sizeof`의 결과 타입은 `size_t`(부호 없는 정수, 보통 64비트)다. 이를 `%d`(`int`)로 출력하면 64비트/타 플랫폼에서 값이 깨질 수 있다. MSVC 32비트에서 우연히 맞는 것뿐이다.
+### G-1. `pointerInit()` — `practice.c:822~836`
+
+**문제 1**: 주소(`&num`, `&ptr`)를 `%d`로 출력한다. 주소는 포인터이므로 `%p` + `(void*)` 캐스트가 맞다. `%d`는 64비트에서 값이 잘린다.
+
+**문제 2**: 라벨이 실제 출력과 어긋난다. `"*ptr: %d", &ptr`는 라벨이 `*ptr`(역참조 값)인데 실제로는 `&ptr`(ptr 변수의 주소)을 넘긴다 — 개념이 정반대다.
+
+**문제 3**: 주석 `// &num == &ptr 이므로...`는 **거짓**이다. `ptr == &num`은 참이지만(ptr이 num의 주소를 담음), `&num`(num의 주소)과 `&ptr`(ptr의 주소)은 서로 다른 변수의 주소이므로 같지 않다.
 
 ```c
 // before
-printf("\narr1 크기: %d \n", sizeof(arr1));
+int num = 10;
+int* ptr = &num;
+
+printf("num: %d\n", &num);      // 라벨 num인데 주소를 %d로
+printf("*ptr: %d\n\n", &ptr);   // 라벨 *ptr인데 &ptr을 전달
+// &num == &ptr이므로, num과 ptr이 가리키는 주소값은 같습니다.  ← 거짓
 ```
 
 ```c
-// after  — size_t 전용 지정자 %zu (C99 이상)
-printf("\narr1 크기: %zu \n", sizeof(arr1));
+// after  — 주소는 %p+(void*), 값은 %d. 라벨을 실제 출력과 일치
+int num = 10;
+int* ptr = &num;
+
+printf("num 값:          %d\n", num);          // 변수의 값
+printf("num 주소 (&num): %p\n", (void*)&num);  // 변수의 주소
+printf("ptr 값:          %p\n", (void*)ptr);   // ptr이 담은 주소 (== &num)
+printf("*ptr (역참조):   %d\n", *ptr);          // ptr이 가리키는 값 (== num)
+printf("ptr 주소 (&ptr): %p\n", (void*)&ptr);  // ptr 변수 자신의 주소 (≠ &num)
+
+// 관계 정리:
+//   ptr == &num   (참: ptr은 num의 주소를 담는다)
+//   *ptr == num   (참: 역참조하면 num의 값)
+//   &ptr != &num  (참: ptr과 num은 서로 다른 변수다)
 ```
 
-549/554/560/565행 4곳 모두 `%d` → `%zu`. (MSVC 구버전에서 `%zu` 미지원 시 `%Iu` 또는 `(unsigned long long)` 캐스트 + `%llu`로 대체.)
+> 함수 뒷부분(`printf("ptr: %p\n", ptr)`, `*ptr` 출력 등)은 이미 올바르므로 그대로 둔다. 위 첫 블록과 거짓 주석만 교체하면 된다.
+
+### G-2. `printArray2()` — `practice.c:1026`
+
+**문제**: 라벨 `"arr+%d"`는 주소를 출력하려는 의도인데, `%p`에 **값** `*(arr + i)`(int)를 넘긴다. 형식·의도가 모두 어긋난다.
+
+```c
+// before
+printf("arr+%d : %p \n\n", i, *(arr + i));   // %p에 int 값 전달
+```
+
+```c
+// after  — 주소를 보이려는 의도라면 (void*)(arr + i)
+printf("arr+%d : %p \n\n", i, (void*)(arr + i));
+// (값을 보이려는 의도였다면 → printf("arr[%d] : %d\n\n", i, *(arr + i)); )
+```
 
 ---
 
-## C. 미사용 변수 `off`
+## H. `Todo` 공용체 초기화 누락 (경고)
 
-**위치**: `practice.c::boolPractice()`
+**위치**: `practice.c::testTodoSystem()`
 
-**문제**: 선언 후 한 번도 사용되지 않는다. `-Wall`에서 경고로 잡힌다.
+**문제**: `Todo t1 = { "...", TODO_PENDING };`처럼 초기화하면 마지막 멤버인 공용체 `info`가 초기화 목록에서 빠져 `-Wmissing-field-initializers` 경고가 난다(3건). 이후 `strcpy`로 채우므로 실동작 위험은 낮다.
 
 ```c
 // before
-bool flag = true;
-bool off = false;   // 미사용
+Todo t1 = { "c 언어 공부", TODO_PENDING };
+strcpy(t1.info.createdDate, "2026-06-11");
 ```
 
 ```c
-// after  — 제거 (또는 실제로 사용하는 예제로 확장)
-bool flag = true;
+// after  — 나머지 멤버를 0으로 명시 초기화 (경고 제거)
+Todo t1 = { "c 언어 공부", TODO_PENDING, {0} };
+strcpy(t1.info.createdDate, "2026-06-11");
 ```
+
+> 또는 `Todo t1 = {0};` 후 필드를 개별 대입하는 방식도 가능하다. 핵심은 집합 초기화 시 전체 멤버를 명시해 경고를 없애는 것.
 
 ---
 
 ## 적용 체크리스트
 
-- [ ] (A) `practice.h`의 `freeSwapCharMemory` 선언 제거 + `practice.c` 상단에 `static` 프로토타입 추가(또는 양쪽 비-static 통일)
-- [ ] (D-1) `#define scanf safe_scanf` 제거, `safe_scanf(...)` 명시 호출로 전환
-- [ ] (D-2) `safe_scanf`를 공용 파일로 분리하고 `input.c`도 동일 래퍼 사용
-- [ ] (D-3) 부분 매칭 재입력 동작 인지(필요 시 항목 단위 입력으로 개선)
-- [ ] (B) `ArrayStringInit` 4곳 `%d` → `%zu`
-- [ ] (C) `boolPractice`의 `off` 제거
-- [ ] (공통) 컴파일 경고 레벨 상향: MSVC `/W4`, gcc/clang `-Wall -Wextra` → 경고 0 목표
+- [ ] (E) `StringFunc`의 `gets(str)` → `fgets` + `strcspn` 개행 제거
+- [ ] (F) `practice.c`에 `#include "input.h"`, `#include "output.h"` 추가
+- [ ] (G-1) `pointerInit` 첫 블록 포맷/라벨 수정 + 거짓 주석 교정
+- [ ] (G-2) `printArray2`의 `%p`에 `(void*)(arr + i)` 전달
+- [ ] (H) `Todo` 집합 초기화에 `{0}` 추가 (3곳)
+- [ ] (공통) `-Wall -Wextra`(gcc) / `/W4`(MSVC) 상시 적용 → 경고 0 유지
 
 ---
 
 ## 검증 메모
 
-- 빌드 검증: Windows 의존 헤더(`windows.h`, `conio.h`)를 스텁으로 대체 후 전체 `.c`를 gcc로 링크. **A 항목 1건만 에러**였고, 수정 시 정상 빌드·링크 확인.
-- 1차 패치(6항목)는 전부 정상 반영 확인. B/C는 경고 수준, D는 설계 개선 권고.
+- 현재 빌드: 에러 0, 정상 링크. 본 문서 항목은 모두 `-Wall -Wextra` 경고 수준(E는 잠재적 런타임 취약점).
+- E~H 반영 후 재빌드하면 의미 있는 경고는 0에 수렴할 것으로 예상(`conio.h` 스텁 관련 경고는 실제 MSVC 환경에선 발생하지 않음).
+- 권고: 이번 이후로는 경고 레벨을 항상 올린 상태로 작업하면, 같은 유형(포맷 불일치·암시적 선언·위험 함수)이 작성 시점에 바로 잡힌다.
