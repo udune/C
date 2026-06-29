@@ -1,43 +1,11 @@
 ﻿#include "practice.h"
 #include <stdarg.h>
 
-int safe_scanf(const char* format, ...) {
-	int expected = 0;
-	for (const char* p = format; *p; p++) {
-		if (*p == '%') {
-			if (*(p + 1) == '%') {
-				p++;
-			}
-			else {
-				expected++;
-			}
-		}
-	}
-
-	va_list args;
-	while (1) {
-		va_start(args, format);
-		int ret = vscanf(format, args);
-		va_end(args);
-
-		if (ret == expected) {
-			return ret;
-		}
-		if (ret == EOF || feof(stdin) || ferror(stdin)) {
-			return ret;
-		}
-
-		printf("잘못된 입력입니다. 다시 입력해주세요.\n");
-		int c;
-		while ((c = getchar()) != '\n' && c != EOF) { }
-	}
-}
-#define scanf safe_scanf
+static void freeSwapCharMemory(char** str, int n);
 
 
 void boolPractice() {
 	bool flag = true;
-	bool off = false;
 
 	if (flag) 
 	{
@@ -64,7 +32,7 @@ void checkScore() {
 	int score;
 
 	printf("점수를 입력하세요: ");
-	scanf("%d", &score);
+	safe_scanf("%d", &score);
 
 	if (score < 0 || score > 100) {
 		printf("잘못된 점수입니다. 0에서 100 사이의 값을 입력하세요.\n");
@@ -83,7 +51,7 @@ void checkBalance() {
 	int balance;
 
 	printf("계좌 잔액을 입력하세요 : ");
-	scanf("%d", &balance);
+	safe_scanf("%d", &balance);
 
 	if (balance > 1000) {
 		printf("출금이 가능합니다.\n");
@@ -101,14 +69,14 @@ void simpleCalculator() {
 	double result;
 
 	printf("첫 번째 숫자를 입력하세요: ");
-	scanf("%d", &num1);
+	safe_scanf("%d", &num1);
 
 	printf("두 번째 숫자를 입력하세요: ");
-	scanf("%d", &num2);
+	safe_scanf("%d", &num2);
 
 	printf("1.덧셈 2.뺄셈 3.곱셈 4.나눗셈\n");
 	printf("연산을 선택하세요 : ");
-	scanf("%d", &choice);
+	safe_scanf("%d", &choice);
 
 	if (choice == 1) {
 		result = num1 + num2;
@@ -136,10 +104,10 @@ void checkPass() {
 	int attendance;
 
 	printf("점수를 입력하세요 (0-100): ");
-	scanf("%d", &score);
+	safe_scanf("%d", &score);
 
 	printf("출석 횟수를 입력하세요 (0-20): ");
-	scanf("%d", &attendance);
+	safe_scanf("%d", &attendance);
 
 	if (score >= 60) {
 		if (attendance >= 15) {
@@ -166,10 +134,10 @@ void cinemaTicket() {
 	int finalPrice;
 
 	printf("나이를 입력하세요: ");
-	scanf("%d", &age);
+	safe_scanf("%d", &age);
 
 	printf("회원입니까? (Y/N): ");
-	scanf(" %c", &isMember);
+	safe_scanf(" %c", &isMember);
 
 	if (age < 13) {
 		price = 5000; // 어린이 요금
@@ -198,7 +166,7 @@ void shoppingDiscount() {
 	int finalPrice;
 
 	printf("구매 금액을 입력하세요 : ");
-	scanf("%d", &price);
+	safe_scanf("%d", &price);
 
 	if (price < 50000) {
 		printf("결제 금액이 5만원 미만입니다. 할인 적용이 없습니다.\n");
@@ -207,7 +175,7 @@ void shoppingDiscount() {
 	else
 	{
 		printf("회원 등급을 입력하세요(G: 일반, V: VIP) : ");
-		scanf(" %c", &memberGrade);
+		safe_scanf(" %c", &memberGrade);
 
 		if (memberGrade == 'G' || memberGrade == 'g')
 		{
@@ -250,7 +218,7 @@ void CombatGame() {
     int choice;
 
     printf("행동을 선택하세요 (1. 공격, 2. 마법, 3. 회복, 4. 도망) : ");
-    scanf("%d", &choice);
+    safe_scanf("%d", &choice);
 
     switch (choice) {
     case 1:
@@ -298,7 +266,7 @@ void TourRecommand(bool reQuestion) {
 	}
 
 	printf("지역을 선택하세요. (1. 서울 2. 부산 3. 제주) : ");
-	scanf("%d", &choice);
+	safe_scanf("%d", &choice);
 
 	switch (choice) {
 	case SEOUL:
@@ -328,7 +296,7 @@ void printGugudan() {
 	int num = 1;
 
 	printf("몇 단을 프린트할까요? : ");
-	scanf("%d", &dan);
+	safe_scanf("%d", &dan);
 
 	while (num <= 9) {
 		printf("%d x %d = %d\n", dan, num, dan * num);
@@ -373,16 +341,16 @@ void passwordCheck() {
 	int input;
 
 	printf("비밀번호를 등록하세요 : ");
-	scanf("%d", &password);
+	safe_scanf("%d", &password);
 
 	printf("비밀번호를 입력하세요 : ");
-	scanf("%d", &input);
+	safe_scanf("%d", &input);
 
 	// 입력된 비밀번호가 등록된 비밀번호와 일치할 때까지 반복
 	while (password != input) {
 		printf("비밀번호가 틀렸습니다.\n");
 		printf("다시 입력하세요 : ");
-		scanf("%d", &input);
+		safe_scanf("%d", &input);
 	}
 
 	// 비밀번호가 일치할 때 메시지를 출력
@@ -395,7 +363,7 @@ void initUntilEqual() {
 
 	do { // 사용자로부터 두 개의 숫자를 입력받음
 		printf("두 개의 숫자를 입력하세요: ");
-		scanf("%d %d", &num1, &num2);
+		safe_scanf("%d %d", &num1, &num2);
 
 		// 입력된 숫자가 일치하지 않는 경우 메시지를 출력하고 다시 입력받음
 		if (num1 != num2) {
@@ -413,7 +381,7 @@ void printEvenNumbers() {
 
 	do { // 사용자로부터 숫자를 입력받음
 		printf("숫자를 입력하세요 (0 입력 시 종료) : ");
-		scanf("%d", &num);
+		safe_scanf("%d", &num);
 
 		// 입력된 숫자가 짝수이고 0이 아닌 경우에만 총합에 더함
 		if (num % 2 == 0 && num != 0) {
@@ -448,7 +416,7 @@ void processVilla() {
 			// villa[1][0], villa[1][1], villa[1][2], 
 			// villa[2][0], villa[2][1], villa[2][2], 
 			// villa[3][0], villa[3][1], villa[3][2]
-			scanf("%d", &villa[i][j]); 
+			safe_scanf("%d", &villa[i][j]); 
 		}
 	}
 
@@ -484,7 +452,7 @@ void processScore() {
 	for (i = 0; i < 4; i++) {
 		for (j = 0; j < 2; j++) {
 			printf("%d번 학생 %d과목 점수: ", i + 1, j + 1);
-			scanf("%d", &score[i][j]);
+			safe_scanf("%d", &score[i][j]);
 		}
 	}
 
@@ -544,23 +512,23 @@ void ArrayStringInit() {
 	arr3Length = sizeof(arr3) / sizeof(char); // sizeof(arr3) = 6, sizeof(char) = 1, arr3Length = 6 (arr3는 'H', 'e', 'l', 'l', 'o', '\0'로 초기화됨)
 	arr4Length = sizeof(arr4) / sizeof(char); // sizeof(arr4) = 14, sizeof(char) = 1, arr4Length = 14 (arr4는 'H', 'e', 'l', 'l', 'o', ' ', 'E', 'v', 'e', 'r', 'y', 'o', 'n', '\0'로 초기화됨)
 
-	printf("\narr1 크기: %d \n", sizeof(arr1));
+	printf("\narr1 크기: %zu \n", sizeof(arr1));
 	for (int i = 0; i < arr1Length; i++) {
 		printf("arr1[%d] %p : %c : %d \n", i, &arr1[i], arr1[i], arr1[i]);
 	}
 
-	printf("\narr2 크기: %d \n", sizeof(arr2));
+	printf("\narr2 크기: %zu \n", sizeof(arr2));
 	for (int i = 0; i < arr2Length; i++) {
 		printf("arr2[%d] %p : %c : %d \n", i, &arr2[i], arr2[i], arr2[i]);
 	}
 	printf("arr2 string %s \n", arr2); // arr2는 "He"로 출력됨 (arr2[0] = 'H', arr2[1] = 'e', arr2[2] = '\0'로 초기화됨))
 
-	printf("\narr3 크기: %d \n", sizeof(arr3));
+	printf("\narr3 크기: %zu \n", sizeof(arr3));
 	for (int i = 0; i < arr3Length; i++) {
 		printf("arr3[%d] %p : %c : %d \n", i, &arr3[i], arr3[i], arr3[i]);
 	}
 
-	printf("\narr4 크기: %d \n", sizeof(arr4));
+	printf("\narr4 크기: %zu \n", sizeof(arr4));
 	for (int i = 0; i < arr4Length; i++) {
 		printf("arr4[%d] %p : %c : %d \n", i, &arr4[i], arr4[i], arr4[i]);
 	}
@@ -592,7 +560,7 @@ void StringSwap() {
 
 	// korea로 입력하면 str 배열에는 
 	// 'k', 'o', 'r', 'e', 'a', '\0'이 저장됨
-	scanf("%99s", str);
+	safe_scanf("%99s", str);
 
 	// korea로 입력하면 len은 5가 됨 (문자열의 길이)
 	len = strlen(str);
@@ -772,7 +740,7 @@ void passwordRegister() {
 
 	while (true) {
 		printf("등록할 비밀번호 입력 : ");
-		scanf("%99s", pw1);
+		safe_scanf("%99s", pw1);
 
 		if (strlen(pw1) < 10) {
 			printf("비밀번호는 10자 이상이어야 합니다.\n");
@@ -828,7 +796,7 @@ void passwordRegister() {
 		}
 
 		printf("비밀번호 확인 입력 : ");
-		scanf("%99s", pw2);
+		safe_scanf("%99s", pw2);
 
 		while (true) {
 			if (strcmp(pw1, pw2) == 0) {
@@ -838,7 +806,7 @@ void passwordRegister() {
 			else {
 				printf("비밀번호가 일치하지 않습니다. 다시 시도하세요.\n");
 				printf("비밀번호 확인 입력 : ");
-				scanf("%99s", pw2);
+				safe_scanf("%99s", pw2);
 			}
 		}
 	}
@@ -952,7 +920,7 @@ void pointerArraySum() {
 
 	for (int i = 0; i < 5; i++) {
 		printf("%d번째 값: ", i + 1);
-		scanf("%d", &arr[i]);
+		safe_scanf("%d", &arr[i]);
 	}
 
 	for (int i = 0; i < 5; i++) {
@@ -969,7 +937,7 @@ void pointerArrayMaxFind() {
 
 	for (int i = 0; i < 5; i++) {
 		printf("%d번째 값: ", i + 1);
-		scanf("%d", (ptr + i));
+		safe_scanf("%d", (ptr + i));
 	}
 
 	max = *ptr; // max를 arr[0]의 값으로 초기화
@@ -1070,7 +1038,7 @@ void mainScoreCalc() {
 	printf("5명의 점수를 입력하세요: \n");
 	for (int i = 0; i < 5; i++) {
 		printf("%d번째 학생 점수: ", i + 1);	
-		scanf("%d", &score[i]);
+		safe_scanf("%d", &score[i]);
 
 	}
 
@@ -1362,11 +1330,11 @@ void StudentInfo(void)
 	strcpy(person1.phone_number, "010-1122-3042");
 
 	printf("이름 입력 : ");
-	scanf("%19s", person2.name);
+	safe_scanf("%19s", person2.name);
 	printf("학번 입력 : ");
-	scanf("%d", &(person2.studen_id));
+	safe_scanf("%d", &(person2.studen_id));
 	printf("전화번호 입력 : ");
-	scanf("%19s", person2.phone_number);
+	safe_scanf("%19s", person2.phone_number);
 
 	printf("이름 : %s \n", person1.name);
 	printf("학번 : %d \n", person1.studen_id);
@@ -1413,7 +1381,7 @@ void AnalyzeMart(void)
 	printf("--- A마트 상품 %d개 입력 (상품명 가격) ---\n", MAX_PRODUCTS);
 	for (int i = 0; i < MAX_PRODUCTS; i++) {
 		printf("A마트 상품 %d: ", i + 1);
-		scanf("%19s %d", martA[i].name, &martA[i].price);
+		safe_scanf("%19s %d", martA[i].name, &martA[i].price);
 
 		// 입력과 동시에 총합 및 최고가 누적 구하기
 		sumA += martA[i].price;
@@ -1425,7 +1393,7 @@ void AnalyzeMart(void)
 	printf("\n--- B마트 상품 %d개 입력 (상품명 가격) ---\n", MAX_PRODUCTS);
 	for (int i = 0; i < MAX_PRODUCTS; i++) {
 		printf("B마트 상품 %d: ", i + 1);
-		scanf("%19s %d", martB[i].name, &martB[i].price);
+		safe_scanf("%19s %d", martB[i].name, &martB[i].price);
 
 		// 입력과 동시에 총합 및 최고가 누적 구하기
 		sumB += martB[i].price;
@@ -1470,11 +1438,11 @@ Person readStudentInfo(void)
 	Person student;
 	printf("학생 정보를 입력하세요.\n");
 	printf("name : ");
-	scanf("%19s", student.name);
+	safe_scanf("%19s", student.name);
 	printf("phone : ");
-	scanf("%19s", student.phone);
+	safe_scanf("%19s", student.phone);
 	printf("age : ");
-	scanf("%d", &student.age);
+	safe_scanf("%d", &student.age);
 
 	return student;
 }
@@ -1503,7 +1471,7 @@ void TestStructPointer(void)
 	print_position(&current_pos);
 
 	printf("\n--증감(x y) 위치입력: ");
-	if (scanf("%d %d", &x_pos, &y_pos) != 2) {
+	if (safe_scanf("%d %d", &x_pos, &y_pos) != 2) {
 		return;
 	}
 
@@ -1574,7 +1542,7 @@ void testBankSystem(void) {
 	printCustomerInfo(&c2);
 
 	printf("고객 정보와 입금 금액 입력 : ");
-	if (scanf("%19s %d", name, &deposit) != 2) {
+	if (safe_scanf("%19s %d", name, &deposit) != 2) {
 		return;
 	}
 
@@ -1698,7 +1666,7 @@ void DynamicMemoryEx1(void)
 	int sum = 0;
 
 	printf("입력할 학생 수는 몇 명인가요? : ");
-	if (scanf("%d", &student_count) != 1 || student_count <= 0) {
+	if (safe_scanf("%d", &student_count) != 1 || student_count <= 0) {
 		printf("올바른 학생 수를 입력해주세요 (1명 이상).\n");
 		return;
 	}
@@ -1715,7 +1683,7 @@ void DynamicMemoryEx1(void)
 	// 동적 할당된 배열은 일반 배열처럼 [ ]를 사용할 수 있음
 	for (int i = 0; i < student_count; i++) {
 		printf("%d번째 학생 성적 입력: ", i + 1);
-		scanf("%d", &scores[i]);
+		safe_scanf("%d", &scores[i]);
 		sum += scores[i];
 	}
 
@@ -1744,7 +1712,7 @@ void DynamicMemoryEx2(void)
 	printf("숫자를 계속 입력하세요 (종료하려면 -1 입력):\n");
 
 	while (true) {
-		scanf("%d", &input);
+		safe_scanf("%d", &input);
 		if (input == -1)
 		{
 			break;
@@ -1792,7 +1760,7 @@ void analyzeMonthlySales(void)
 
 	// 1. 이번 달 판매 물품 종류 개수 입력 받기
 	printf("이번 달에 판매한 물품의 종류는 몇 개인가요?: ");
-	scanf("%d", &item_count);
+	safe_scanf("%d", &item_count);
 
 	if (item_count <= 0) {
 		printf("올바른 물품 개수를 입력해주세요 (1개 이상).\n");
@@ -1812,7 +1780,7 @@ void analyzeMonthlySales(void)
 	printf("\n각 물품의 판매 금액을 입력하세요:\n");
 	for (int i = 0; i < item_count; i++) {
 		printf("%d번째 물품 판매 금액: ", i + 1);
-		scanf("%d", &sales_board[i]);
+		safe_scanf("%d", &sales_board[i]);
 
 		// 입력받은 금액을 이번 달 총매출에 계속 더함
 		this_month_total += sales_board[i];
@@ -1820,7 +1788,7 @@ void analyzeMonthlySales(void)
 
 	// 4. 비교 대상인 지난달 총매출액 입력 받기
 	printf("\n지난달 총매출 금액을 입력하세요: ");
-	if (scanf("%d", &last_month_total) != 1) {
+	if (safe_scanf("%d", &last_month_total) != 1) {
 		printf("올바른 금액을 입력해주세요.\n");
 		return;
 	}

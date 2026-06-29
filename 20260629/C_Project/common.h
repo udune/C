@@ -9,4 +9,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+int safe_scanf(const char* format, ...);
+
 #endif

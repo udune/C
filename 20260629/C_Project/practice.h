@@ -60,7 +60,6 @@ void SwapPtr(int* p1, int* p2);
 void SwapDPointer();
 void SwapDPtr(int** pp1, int** pp2);
 void SwapChar();
-void freeSwapCharMemory(char** str, int n);
 void DoublePointer();
 void updateString(char** dest_ptr);
 
