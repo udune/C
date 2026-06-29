@@ -1,4 +1,39 @@
 #include "practice.h"
+#include <stdarg.h>
+
+int safe_scanf(const char* format, ...) {
+	int expected = 0;
+	for (const char* p = format; *p; p++) {
+		if (*p == '%') {
+			if (*(p + 1) == '%') {
+				p++;
+			}
+			else {
+				expected++;
+			}
+		}
+	}
+
+	va_list args;
+	while (1) {
+		va_start(args, format);
+		int ret = vscanf(format, args);
+		va_end(args);
+
+		if (ret == expected) {
+			return ret;
+		}
+		if (ret == EOF || feof(stdin) || ferror(stdin)) {
+			return ret;
+		}
+
+		printf("잘못된 입력입니다. 다시 입력해주세요.\n");
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF) { }
+	}
+}
+#define scanf safe_scanf
+
 
 void boolPractice() {
 	bool flag = true;
@@ -602,7 +637,7 @@ void StringSwap() {
 
 	// korea로 입력하면 str 배열에는 
 	// 'k', 'o', 'r', 'e', 'a', '\0'이 저장됨
-	scanf("%s", str);
+	scanf("%99s", str);
 
 	// korea로 입력하면 len은 5가 됨 (문자열의 길이)
 	len = strlen(str);
@@ -782,7 +817,7 @@ void passwordRegister() {
 
 	while (true) {
 		printf("등록할 비밀번호 입력 : ");
-		scanf("%s", pw1);
+		scanf("%99s", pw1);
 
 		if (strlen(pw1) < 10) {
 			printf("비밀번호는 10자 이상이어야 합니다.\n");
@@ -838,7 +873,7 @@ void passwordRegister() {
 		}
 
 		printf("비밀번호 확인 입력 : ");
-		scanf("%s", pw2);
+		scanf("%99s", pw2);
 
 		while (true) {
 			if (strcmp(pw1, pw2) == 0) {
@@ -848,7 +883,7 @@ void passwordRegister() {
 			else {
 				printf("비밀번호가 일치하지 않습니다. 다시 시도하세요.\n");
 				printf("비밀번호 확인 입력 : ");
-				scanf("%s", pw2);
+				scanf("%99s", pw2);
 			}
 		}
 	}
@@ -1372,11 +1407,11 @@ void StudentInfo(void)
 	strcpy(person1.phone_number, "010-1122-3042");
 
 	printf("이름 입력 : ");
-	scanf("%s", person2.name);
+	scanf("%19s", person2.name);
 	printf("학번 입력 : ");
 	scanf("%d", &(person2.studen_id));
 	printf("전화번호 입력 : ");
-	scanf("%s", person2.phone_number);
+	scanf("%19s", person2.phone_number);
 
 	printf("이름 : %s \n", person1.name);
 	printf("학번 : %d \n", person1.studen_id);
@@ -1423,7 +1458,7 @@ void AnalyzeMart(void)
 	printf("--- A마트 상품 %d개 입력 (상품명 가격) ---\n", MAX_PRODUCTS);
 	for (int i = 0; i < MAX_PRODUCTS; i++) {
 		printf("A마트 상품 %d: ", i + 1);
-		scanf("%s %d", martA[i].name, &martA[i].price);
+		scanf("%19s %d", martA[i].name, &martA[i].price);
 
 		// 입력과 동시에 총합 및 최고가 누적 구하기
 		sumA += martA[i].price;
@@ -1435,7 +1470,7 @@ void AnalyzeMart(void)
 	printf("\n--- B마트 상품 %d개 입력 (상품명 가격) ---\n", MAX_PRODUCTS);
 	for (int i = 0; i < MAX_PRODUCTS; i++) {
 		printf("B마트 상품 %d: ", i + 1);
-		scanf("%s %d", martB[i].name, &martB[i].price);
+		scanf("%19s %d", martB[i].name, &martB[i].price);
 
 		// 입력과 동시에 총합 및 최고가 누적 구하기
 		sumB += martB[i].price;
@@ -1480,9 +1515,9 @@ Person readStudentInfo(void)
 	Person student;
 	printf("학생 정보를 입력하세요.\n");
 	printf("name : ");
-	scanf("%s", student.name);
+	scanf("%19s", student.name);
 	printf("phone : ");
-	scanf("%s", student.phone);
+	scanf("%19s", student.phone);
 	printf("age : ");
 	scanf("%d", &student.age);
 
@@ -1584,7 +1619,7 @@ void testBankSystem(void) {
 	printCustomerInfo(&c2);
 
 	printf("고객 정보와 입금 금액 입력 : ");
-	if (scanf("%s %d", name, &deposit) != 2) {
+	if (scanf("%19s %d", name, &deposit) != 2) {
 		return;
 	}
 
