@@ -208,6 +208,7 @@ typedef struct {
 } Students;
 
 void RegisterStudentScore(Students* students);
+void ReadStudentScore(Students* students);
 void mainStudentScore(void);
 
 #endif

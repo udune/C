@@ -1991,14 +1991,7 @@ void RegisterStudentScore(Students* students) {
 	printf("\n학생 성적 저장 완료 (CSV)\n");
 }
 
-void mainStudentScore(void) {
-	Students students[NUM_STUDENTS];
-
-	RegisterStudentScore(students);
-
-	// 파일에서 읽은 학생 정보 출력
-	printf("\n===== 파일에서 읽은 학생 정보 =====\n\n");
-
+void ReadStudentScore(Students* students) {
 	FILE* fp = fopen("student.csv", "r");
 	if (fp == NULL) {
 		printf("파일 열기 실패\n");
@@ -2011,25 +2004,25 @@ void mainStudentScore(void) {
 		return;
 	}
 
-	Students read_students[NUM_STUDENTS];
 	int count = 0;
 	while (count < NUM_STUDENTS) {
 		char line[150];
 		if (fgets(line, sizeof(line), fp) == NULL) {
 			break;
 		}
-		// Parse CSV line
 		if (sscanf(line, "%[^,],%d,%d,%d,%d,%d",
-			read_students[count].name,
-			&read_students[count].id,
-			&read_students[count].kor,
-			&read_students[count].eng,
-			&read_students[count].math,
-			&read_students[count].sci) == 6) {
+			students[count].name,
+			&students[count].id,
+			&students[count].kor,
+			&students[count].eng,
+			&students[count].math,
+			&students[count].sci) == 6) {
 			count++;
 		}
 	}
 	fclose(fp);
+
+	printf("\n===== 파일에서 읽은 학생 정보 =====\n\n");
 
 	int half = (count + 1) / 2; // For count=5, half=3
 	for (int i = 0; i < half; i++) {
@@ -2041,22 +2034,22 @@ void mainStudentScore(void) {
 
 		// Left student formatting
 		sprintf(left_buf[0], "[%d번째 학생]", left_idx + 1);
-		sprintf(left_buf[1], "이름 : %s", read_students[left_idx].name);
-		sprintf(left_buf[2], "학번 : %d", read_students[left_idx].id);
-		sprintf(left_buf[3], "국어 : %d", read_students[left_idx].kor);
-		sprintf(left_buf[4], "영어 : %d", read_students[left_idx].eng);
-		sprintf(left_buf[5], "수학 : %d", read_students[left_idx].math);
-		sprintf(left_buf[6], "과학 : %d", read_students[left_idx].sci);
+		sprintf(left_buf[1], "이름 : %s", students[left_idx].name);
+		sprintf(left_buf[2], "학번 : %d", students[left_idx].id);
+		sprintf(left_buf[3], "국어 : %d", students[left_idx].kor);
+		sprintf(left_buf[4], "영어 : %d", students[left_idx].eng);
+		sprintf(left_buf[5], "수학 : %d", students[left_idx].math);
+		sprintf(left_buf[6], "과학 : %d", students[left_idx].sci);
 
 		if (right_idx < count) {
 			// Right student formatting
 			sprintf(right_buf[0], "[%d번째 학생]", right_idx + 1);
-			sprintf(right_buf[1], "이름 : %s", read_students[right_idx].name);
-			sprintf(right_buf[2], "학번 : %d", read_students[right_idx].id);
-			sprintf(right_buf[3], "국어 : %d", read_students[right_idx].kor);
-			sprintf(right_buf[4], "영어 : %d", read_students[right_idx].eng);
-			sprintf(right_buf[5], "수학 : %d", read_students[right_idx].math);
-			sprintf(right_buf[6], "과학 : %d", read_students[right_idx].sci);
+			sprintf(right_buf[1], "이름 : %s", students[right_idx].name);
+			sprintf(right_buf[2], "학번 : %d", students[right_idx].id);
+			sprintf(right_buf[3], "국어 : %d", students[right_idx].kor);
+			sprintf(right_buf[4], "영어 : %d", students[right_idx].eng);
+			sprintf(right_buf[5], "수학 : %d", students[right_idx].math);
+			sprintf(right_buf[6], "과학 : %d", students[right_idx].sci);
 
 			for (int line = 0; line < 7; line++) {
 				// Display width calculation and side-by-side print
@@ -2076,6 +2069,14 @@ void mainStudentScore(void) {
 		}
 		printf("\n");
 	}
+}
+
+void mainStudentScore(void) {
+	Students students[NUM_STUDENTS];
+	Students readStudents[NUM_STUDENTS];
+
+	RegisterStudentScore(students);
+	ReadStudentScore(readStudents);
 }
 
 
