@@ -1871,6 +1871,57 @@ void readDatatoFile(void)
 	puts("파일 읽기 완료");
 }
 
+void writeBinFile(void)
+{
+	int write_data[3] = { 100, 200, 300 };
+	int block_size = 3;
+
+	FILE* fp = fopen("binFile.bin", "wb");
+
+	if (fp == NULL)
+	{
+		printf("파일을 열 수 없습니다.\n");
+		return;
+	}
+
+	//buf에 있는 데이터를 int 크기만큼 총 3개 파일에 대입
+	int write_length = (int)fwrite(write_data, sizeof(int), (size_t)block_size, fp);
+
+	if (write_length < block_size) {
+		fclose(fp);
+		printf("파일 쓰기 실패 : %s, %d(%d)\n", "binFile.bin", block_size, write_length);
+		return;
+	}
+	fclose(fp);
+
+	puts("Bin 파일 저장 완료");
+}
+
+void readBinFile(void)
+{
+	int read_data[3] = { 0, };
+
+	FILE* fp = fopen("binFile.bin", "rb");
+
+	if (fp == NULL) {
+		printf("파일 열기 실패\n");
+		return;
+	}
+
+	int block_size = 3;
+	//파일에 적힌 이진 데이터를 다시 int 크기씩 3개 읽어서 buf 배열에 채워 넣음
+	int read_length = (int)fread(read_data, sizeof(int), (size_t)block_size, fp);
+	(void)read_length; // 미사용 변수 경고 방지
+
+	fclose(fp);
+
+	for (int i = 0; i < (int)(sizeof(read_data) / sizeof(int)); i++) {
+		printf("%d\n", read_data[i]);
+	}
+
+	puts("Bin 파일 읽기 완료");
+}
+
 
 
 

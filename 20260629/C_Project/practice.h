@@ -193,6 +193,9 @@ void analyzeMonthlySales(void);
 void writeDatatoFile(void);
 void readDatatoFile(void);
 
+void writeBinFile(void);
+void readBinFile(void);
+
 #endif
 
 

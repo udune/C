@@ -76,7 +76,9 @@ static const MenuItem MENU[] = {
 	{ "Dynamic Memory Ex 2", DynamicMemoryEx2 },
 	{ "Analyze Monthly Sales", analyzeMonthlySales },
 	{ "Write Data to File", writeDatatoFile },
-	{ "Read Data from File", readDatatoFile }
+	{ "Read Data from File", readDatatoFile },
+	{ "Write Binary Data to File", writeBinFile },
+	{ "Read Binary Data from File", readBinFile }
 };
 
 static const int MENU_COUNT = sizeof(MENU) / sizeof(MENU[0]);
