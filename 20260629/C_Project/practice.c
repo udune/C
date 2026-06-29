@@ -1789,6 +1789,70 @@ void DynamicMemoryEx2(void)
 	arr = NULL;
 }
 
+void analyzeMonthlySales(void)
+{
+	int item_count;               // 판매 물품 종류 개수
+	int* sales_board = NULL;      // 물품별 금액을 저장할 동적 배열 포인터
+	int this_month_total = 0;     // 이번 달 총매출액
+	int last_month_total = 0;     // 지난달 총매출액 (사용자 입력)
+	int difference = 0;           // 두 달간의 매출 차액
+
+	// 1. 이번 달 판매 물품 종류 개수 입력 받기
+	printf("이번 달에 판매한 물품의 종류는 몇 개인가요?: ");
+	scanf("%d", &item_count);
+
+	if (item_count <= 0) {
+		printf("올바른 물품 개수를 입력해주세요 (1개 이상).\n");
+		return;
+	}
+
+	// 2. 입력받은 물품 개수만큼 힙(Heap) 영역에 맞춤형 배열 동적 할당
+	sales_board = (int*)malloc(sizeof(int) * item_count);
+
+	// [예외 처리] 메모리 공간이 부족할 경우 프로그램 안전 종료
+	if (sales_board == NULL) {
+		printf("메모리 공간이 부족하여 배열을 생성할 수 없습니다.\n");
+		return;
+	}
+
+	// 3. 각 물품별 판매 금액 입력받기 및 이번 달 매출 누적
+	printf("\n각 물품의 판매 금액을 입력하세요:\n");
+	for (int i = 0; i < item_count; i++) {
+		printf("%d번째 물품 판매 금액: ", i + 1);
+		scanf("%d", &sales_board[i]);
+
+		// 입력받은 금액을 이번 달 총매출에 계속 더함
+		this_month_total += sales_board[i];
+	}
+
+	// 4. 비교 대상인 지난달 총매출액 입력 받기
+	printf("\n지난달 총매출 금액을 입력하세요: ");
+	scanf("%d", &last_month_total);
+
+	// 5. 매출 분석 및 결과 출력
+	printf("\n====================================\n");
+	printf("      [ 매출 분석 결과 ]\n");
+	printf("====================================\n");
+	printf("이번 달 총매출: %d원\n", this_month_total);
+	printf("지난 달 총매출: %d원\n", last_month_total);
+	printf("------------------------------------\n");
+
+	// 두 매출 간의 차액 계산 (절대값 처리를 위해 조건문 활용)
+	if (this_month_total >= last_month_total) {
+		difference = this_month_total - last_month_total;
+		printf("지난달 대비 [%d원] 증가\n", difference);
+	}
+	else {
+		difference = last_month_total - this_month_total;
+		printf("지난달 대비 [%d원] 감소\n", difference);
+	}
+	printf("====================================\n");
+
+	// 6. 사용이 끝난 동적 배열 메모리를 컴퓨터에 확실하게 반납!
+	free(sales_board);
+	sales_board = NULL; // 가리키던 주소를 지워 안전하게 마감
+}
+
 
 
 

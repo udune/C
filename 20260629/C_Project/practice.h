@@ -189,6 +189,7 @@ void testTodoSystem(void);
 
 void DynamicMemoryEx1(void);
 void DynamicMemoryEx2(void);
+void analyzeMonthlySales(void);
 
 #endif
 

@@ -69,7 +69,8 @@ int main(void) {
 	//testEnum();
 	//testTodoSystem();
 	//DynamicMemoryEx1();
-	DynamicMemoryEx2();
+	//DynamicMemoryEx2();
+	analyzeMonthlySales();
 
 	return 0;
 }
