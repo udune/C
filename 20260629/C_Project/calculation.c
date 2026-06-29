@@ -1,42 +1,42 @@
-#include <stdio.h>
+#include "practice.h"
 
-int main(void) {
+void calculation(void) {
 
 	int a = 10;
 	int b = 20;
 
-	printf("»ê¼ú ¿¬»êÀÚ\n");
+	printf("ì‚°ìˆ  ì—°ì‚°ì\n");
 	printf("a + b = %d\n", a + b);
 	printf("a - b = %d\n", a - b);
 	printf("a * b = %d\n", a * b);
 	printf("a / b = %d\n", a / b);
 	printf("a %% b = %d\n", a % b);
 
-	printf("\n´ëÀÔ ¿¬»êÀÚ\n");
+	printf("\nëŒ€ì… ì—°ì‚°ì\n");
 	int x = 10;
 	x += 5;
 	printf("x += 5 -> x = %d\n", x);
 	x *= 2;
 	printf("x *= 2 -> x = %d\n", x);
 
-	printf("\nÁõ°¨ ¿¬»êÀÚ\n");
+	printf("\nì¦ê° ì—°ì‚°ì\n");
 	int i = 1;
 	printf("i++ = %d\n", i++);
-	printf("ÇöÀç i = %d\n", i);
+	printf("í˜„ì¬ i = %d\n", i);
 	printf("++i = %d\n", ++i);
 
-	printf("\n°ü°è ¿¬»êÀÚ\n");
+	printf("\nê´€ê³„ ì—°ì‚°ì\n");
 	printf("a > b = %d\n", a > b);
 	printf("a < b = %d\n", a < b);
 	printf("a == b = %d\n", a == b);
 	printf("a != b = %d\n", a != b);
 
-	printf("\n³í¸® ¿¬»êÀÚ\n");
+	printf("\në…¼ë¦¬ ì—°ì‚°ì\n");
 	printf("(a > b && b > 0) = %d\n", (a > b) && (b > 0));
 	printf("(a < b || b > 0) = %d\n", (a < b) || (b > 0));
 	printf("!(a > b) = %d\n", !(a > b));
 
-	printf("\nºñÆ® ¿¬»êÀÚ\n");
+	printf("\në¹„íŠ¸ ì—°ì‚°ì\n");
 	printf("a & b = %d\n", a & b);
 	printf("a | b = %d\n", a | b);
 	printf("a ^ b = %d\n", a ^ b);

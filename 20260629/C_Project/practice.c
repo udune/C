@@ -60,51 +60,6 @@ void typeConversionPractice() {
 	printf("명시적 형변환 후 나누기: %f\n", result2);
 }
 
-void calculation() {
-
-	int a = 10;
-	int b = 20;
-
-	printf("산술 연산자\n");
-	printf("a + b = %d\n", a + b);
-	printf("a - b = %d\n", a - b);
-	printf("a * b = %d\n", a * b);
-	printf("a / b = %d\n", a / b);
-	printf("a %% b = %d\n", a % b);
-
-	printf("\n대입 연산자\n");
-	int x = 10;
-	x += 5;
-	printf("x += 5 -> x = %d\n", x);
-	x *= 2;
-	printf("x *= 2 -> x = %d\n", x);
-
-	printf("\n증감 연산자\n");
-	int i = 1;
-	printf("i++ = %d\n", i++);
-	printf("현재 i = %d\n", i);
-	printf("++i = %d\n", ++i);
-
-	printf("\n관계 연산자\n");
-	printf("a > b = %d\n", a > b);
-	printf("a < b = %d\n", a < b);
-	printf("a == b = %d\n", a == b);
-	printf("a != b = %d\n", a != b);
-
-	printf("\n논리 연산자\n");
-	printf("(a > b && b > 0) = %d\n", (a > b) && (b > 0));
-	printf("(a < b || b > 0) = %d\n", (a < b) || (b > 0));
-	printf("!(a > b) = %d\n", !(a > b));
-
-	printf("\n비트 연산자\n");
-	printf("a & b = %d\n", a & b);
-	printf("a | b = %d\n", a | b);
-	printf("a ^ b = %d\n", a ^ b);
-	printf("~a = %d\n", ~a);
-	printf("b << 1 = %d\n", b << 1);
-	printf("b >> 1 = %d\n", b >> 1);
-}
-
 void checkScore() {
 	int score;
 
@@ -1743,7 +1698,10 @@ void DynamicMemoryEx1(void)
 	int sum = 0;
 
 	printf("입력할 학생 수는 몇 명인가요? : ");
-	scanf("%d", &student_count);
+	if (scanf("%d", &student_count) != 1 || student_count <= 0) {
+		printf("올바른 학생 수를 입력해주세요 (1명 이상).\n");
+		return;
+	}
 
 	// 입력받은 학생 수만큼 정확하게 힙(Heap) 영역에 메모리 할당
 	scores = (int*)malloc(sizeof(int) * student_count);
@@ -1763,7 +1721,7 @@ void DynamicMemoryEx1(void)
 
 	printf("\n--- 결과 ---\n");
 	printf("총점: %d\n", sum);
-	printf("평균: %.2f\n", (float)sum / student_count);
+	printf("평균: %.2f\n", (double)sum / student_count);
 
 	// 사용이 끝난 메모리는 반드시 해제
 	free(scores);
@@ -1862,7 +1820,10 @@ void analyzeMonthlySales(void)
 
 	// 4. 비교 대상인 지난달 총매출액 입력 받기
 	printf("\n지난달 총매출 금액을 입력하세요: ");
-	scanf("%d", &last_month_total);
+	if (scanf("%d", &last_month_total) != 1) {
+		printf("올바른 금액을 입력해주세요.\n");
+		return;
+	}
 
 	// 5. 매출 분석 및 결과 출력
 	printf("\n====================================\n");
