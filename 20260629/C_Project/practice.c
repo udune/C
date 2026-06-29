@@ -1,4 +1,4 @@
-﻿#include "practice.h"
+#include "practice.h"
 #include "input.h"     // getChar 선언
 #include "output.h"    // printChar 선언
 #include <stdarg.h>
@@ -1921,6 +1921,163 @@ void readBinFile(void)
 
 	puts("Bin 파일 읽기 완료");
 }
+
+static int get_display_width(const char* str) {
+	int width = 0;
+	while (*str) {
+		if ((*str & 0x80) == 0) {
+			width += 1;
+			str += 1;
+		}
+		else if ((*str & 0xE0) == 0xC0) {
+			width += 2;
+			str += 2;
+		}
+		else if ((*str & 0xF0) == 0xE0) {
+			width += 2;
+			str += 3;
+		}
+		else if ((*str & 0xF8) == 0xF0) {
+			width += 2;
+			str += 4;
+		}
+		else {
+			str += 1;
+		}
+	}
+	return width;
+}
+
+void RegisterStudentScore(Students* students) {
+	for (int i = 0; i < NUM_STUDENTS; i++) {
+		printf("\n[%d번째 학생]\n", i + 1);
+
+		printf("이름: ");
+		scanf("%19s", students[i].name);
+
+		printf("학번: ");
+		scanf("%d", &students[i].id);
+
+		printf("국어 영어 수학 과학 점수: ");
+		scanf("%d %d %d %d",
+			&students[i].kor,
+			&students[i].eng,
+			&students[i].math,
+			&students[i].sci);
+	}
+
+	FILE* fp = fopen("student.csv", "w");
+
+	if (fp == NULL) {
+		printf("파일 열기 실패\n");
+		return;
+	}
+
+	// csv 헤더 (엑셀용)
+	fprintf(fp, "name,id,kor,eng,math,sci\n");
+
+	for (int i = 0; i < NUM_STUDENTS; i++) {
+		fprintf(fp, "%s,%d,%d,%d,%d,%d\n",
+			students[i].name,
+			students[i].id,
+			students[i].kor,
+			students[i].eng,
+			students[i].math,
+			students[i].sci);
+	}
+
+	fclose(fp);
+
+	printf("\n학생 성적 저장 완료 (CSV)\n");
+}
+
+void mainStudentScore(void) {
+	Students students[NUM_STUDENTS];
+
+	RegisterStudentScore(students);
+
+	// 파일에서 읽은 학생 정보 출력
+	printf("\n===== 파일에서 읽은 학생 정보 =====\n\n");
+
+	FILE* fp = fopen("student.csv", "r");
+	if (fp == NULL) {
+		printf("파일 열기 실패\n");
+		return;
+	}
+
+	char header[100];
+	if (fgets(header, sizeof(header), fp) == NULL) {
+		fclose(fp);
+		return;
+	}
+
+	Students read_students[NUM_STUDENTS];
+	int count = 0;
+	while (count < NUM_STUDENTS) {
+		char line[150];
+		if (fgets(line, sizeof(line), fp) == NULL) {
+			break;
+		}
+		// Parse CSV line
+		if (sscanf(line, "%[^,],%d,%d,%d,%d,%d",
+			read_students[count].name,
+			&read_students[count].id,
+			&read_students[count].kor,
+			&read_students[count].eng,
+			&read_students[count].math,
+			&read_students[count].sci) == 6) {
+			count++;
+		}
+	}
+	fclose(fp);
+
+	int half = (count + 1) / 2; // For count=5, half=3
+	for (int i = 0; i < half; i++) {
+		int left_idx = i;
+		int right_idx = i + half;
+
+		char left_buf[7][100];
+		char right_buf[7][100];
+
+		// Left student formatting
+		sprintf(left_buf[0], "[%d번째 학생]", left_idx + 1);
+		sprintf(left_buf[1], "이름 : %s", read_students[left_idx].name);
+		sprintf(left_buf[2], "학번 : %d", read_students[left_idx].id);
+		sprintf(left_buf[3], "국어 : %d", read_students[left_idx].kor);
+		sprintf(left_buf[4], "영어 : %d", read_students[left_idx].eng);
+		sprintf(left_buf[5], "수학 : %d", read_students[left_idx].math);
+		sprintf(left_buf[6], "과학 : %d", read_students[left_idx].sci);
+
+		if (right_idx < count) {
+			// Right student formatting
+			sprintf(right_buf[0], "[%d번째 학생]", right_idx + 1);
+			sprintf(right_buf[1], "이름 : %s", read_students[right_idx].name);
+			sprintf(right_buf[2], "학번 : %d", read_students[right_idx].id);
+			sprintf(right_buf[3], "국어 : %d", read_students[right_idx].kor);
+			sprintf(right_buf[4], "영어 : %d", read_students[right_idx].eng);
+			sprintf(right_buf[5], "수학 : %d", read_students[right_idx].math);
+			sprintf(right_buf[6], "과학 : %d", read_students[right_idx].sci);
+
+			for (int line = 0; line < 7; line++) {
+				// Display width calculation and side-by-side print
+				int w = get_display_width(left_buf[line]);
+				printf("%s", left_buf[line]);
+				for (int s = 0; s < 19 - w; s++) {
+					putchar(' ');
+				}
+				printf("%s\n", right_buf[line]);
+			}
+		}
+		else {
+			// Print only left
+			for (int line = 0; line < 7; line++) {
+				printf("%s\n", left_buf[line]);
+			}
+		}
+		printf("\n");
+	}
+}
+
 
 
 

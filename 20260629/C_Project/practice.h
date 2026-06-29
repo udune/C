@@ -1,4 +1,4 @@
-﻿#ifndef PRACTICE_H
+#ifndef PRACTICE_H
 #define PRACTICE_H
 
 #include "common.h"
@@ -195,6 +195,20 @@ void readDatatoFile(void);
 
 void writeBinFile(void);
 void readBinFile(void);
+
+#define NUM_STUDENTS 5
+
+typedef struct {
+	char name[20];
+	int id;
+	int kor;
+	int eng;
+	int math;
+	int sci;
+} Students;
+
+void RegisterStudentScore(Students* students);
+void mainStudentScore(void);
 
 #endif
 

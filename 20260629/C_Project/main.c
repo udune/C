@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include "common.h"
 #include <windows.h>
 #include "input.h"
@@ -78,7 +78,8 @@ static const MenuItem MENU[] = {
 	{ "Write Data to File", writeDatatoFile },
 	{ "Read Data from File", readDatatoFile },
 	{ "Write Binary Data to File", writeBinFile },
-	{ "Read Binary Data from File", readBinFile }
+	{ "Read Binary Data from File", readBinFile },
+	{ "Student Score CSV Practice", mainStudentScore }
 };
 
 static const int MENU_COUNT = sizeof(MENU) / sizeof(MENU[0]);
