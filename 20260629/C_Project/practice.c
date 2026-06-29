@@ -1,4 +1,4 @@
-#include "practice.h"
+﻿#include "practice.h"
 #include <stdarg.h>
 
 int safe_scanf(const char* format, ...) {
@@ -1847,6 +1847,50 @@ void analyzeMonthlySales(void)
 	// 6. 사용이 끝난 동적 배열 메모리를 컴퓨터에 확실하게 반납!
 	free(sales_board);
 	sales_board = NULL; // 가리키던 주소를 지워 안전하게 마감
+}
+
+void writeDatatoFile(void)
+{
+	FILE* fp = fopen("test.txt", "w");
+
+	if (fp == NULL)
+	{
+		printf("파일을 열 수 없습니다.\n");
+		return;
+	}
+
+	fputs("Kim", fp);
+	fputc(':', fp);
+	fputs("25", fp);
+	fputc('\n', fp);
+
+	fclose(fp);
+
+	puts("파일 저장 완료");
+}
+
+void readDatatoFile(void)
+{
+	char buffer[100];
+
+	FILE* fp = fopen("test.txt", "r");
+
+	if (fp == NULL)
+	{
+		printf("파일을 열 수 없습니다.\n");
+		return;
+	}
+
+	printf("=== 파일 내용 ===\n");
+
+	while (fgets(buffer, sizeof(buffer), fp) != NULL)
+	{
+		printf("%s", buffer);
+	}
+
+	fclose(fp);
+
+	puts("파일 읽기 완료");
 }
 
 

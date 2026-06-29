@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include "common.h"
 #include <windows.h>
 #include "input.h"
@@ -74,7 +74,9 @@ static const MenuItem MENU[] = {
 	{ "Test Todo System", testTodoSystem },
 	{ "Dynamic Memory Ex 1", DynamicMemoryEx1 },
 	{ "Dynamic Memory Ex 2", DynamicMemoryEx2 },
-	{ "Analyze Monthly Sales", analyzeMonthlySales }
+	{ "Analyze Monthly Sales", analyzeMonthlySales },
+	{ "Write Data to File", writeDatatoFile },
+	{ "Read Data from File", readDatatoFile }
 };
 
 static const int MENU_COUNT = sizeof(MENU) / sizeof(MENU[0]);

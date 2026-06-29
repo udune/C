@@ -1,4 +1,4 @@
-#ifndef PRACTICE_H
+﻿#ifndef PRACTICE_H
 #define PRACTICE_H
 
 #include "common.h"
@@ -190,6 +190,9 @@ void testTodoSystem(void);
 void DynamicMemoryEx1(void);
 void DynamicMemoryEx2(void);
 void analyzeMonthlySales(void);
+
+void writeDatatoFile(void);
+void readDatatoFile(void);
 
 #endif
 

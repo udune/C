@@ -1,39 +1,20 @@
-﻿## 5. `main.c` 주석 토글 디스패처 — 확장성 개선
+﻿## 6. 파일 인코딩 혼재
  
-**위치**: `main.c`
+**위치**: 저장소 전반 (`main.c`/`practice.c` = UTF-8, `calculation.c` 등 = CP949)
  
-**문제**: 실습 함수가 늘 때마다 주석 처리된 호출 목록이 비대해진다(현재 60+ 줄). 학습용으로는 무방하나, 이미 **함수 포인터·콜백**을 학습했으므로 그 복습을 겸해 메뉴 디스패처로 전환할 만하다.
+**문제**: 파일별 인코딩이 섞여 있어 외부 도구(git diff, 비-MSVC 에디터, CI)에서 한글이 깨질 수 있다.
  
-```c
-// after  — 함수 포인터 테이블 기반 메뉴 디스패처 (개념 예시)
-typedef struct {
-    const char* label;
-    void (*run)(void);
-} MenuItem;
+**권장**: 전 파일을 **UTF-8 (with BOM)** 으로 통일한다. MSVC는 BOM 있는 UTF-8을 안정적으로 인식한다.
  
-static const MenuItem MENU[] = {
-    { "동적 메모리 1",      DynamicMemoryEx1 },
-    { "동적 메모리 2",      DynamicMemoryEx2 },
-    { "월별 매출 분석",     analyzeMonthlySales },
-    // ... 필요한 항목 추가
-};
-static const int MENU_COUNT = sizeof(MENU) / sizeof(MENU[0]);
- 
-int main(void) {
-    SetConsoleCP(65001);
-    SetConsoleOutputCP(65001);
- 
-    for (int i = 0; i < MENU_COUNT; i++) {
-        printf("%d. %s\n", i + 1, MENU[i].label);
-    }
-    printf("실행할 번호: ");
- 
-    int sel;
-    if (scanf("%d", &sel) == 1 && sel >= 1 && sel <= MENU_COUNT) {
-        MENU[sel - 1].run();
-    } else {
-        printf("잘못된 선택입니다.\n");
-    }
-    return 0;
-}
+```bash
+# 예: CP949 → UTF-8(BOM) 일괄 변환 (Git Bash / WSL)
+for f in $(grep -rIl --include='*.c' --include='*.h' . ); do
+  enc=$(file -b --mime-encoding "$f")
+  if [ "$enc" = "iso-8859-1" ] || [ "$enc" = "euc-kr" ]; then
+    iconv -f CP949 -t UTF-8 "$f" | sed '1s/^/\xEF\xBB\xBF/' > "$f.tmp" && mv "$f.tmp" "$f"
+  fi
+done
 ```
+> 변환 전 커밋/백업 필수. `.gitattributes`에 `*.c text` / `*.h text`를 두면 줄바꿈 일관성도 확보된다.
+ 
+---
